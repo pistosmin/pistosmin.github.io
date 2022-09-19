@@ -1,0 +1,35 @@
+# Site Info
+title: ""
+tagline: ""
+description: ""
+baseurl: ""
+url: https://pistosmin.github.io
+logo: ""
+
+# Site configurations
+#gems:
+#  - jekyll-paginate
+#markdown: kramdown
+#kramdown:
+#  input: GFM
+#excerpt_separator: "<!-- more -->"
+sass:
+  style: compressed
+  sass_dir: _scss
+#paginate:
+#paginate_path: ''
+#permalink: pretty
+
+version: 1.0.0
+
+# About/contact
+author:
+  name: Sungmin Lee
+  description: Sungmin Lee
+  contact:
+    # linkedin:  https://www.linkedin.com/in/
+    github:    https://github.com/pistosmin
+    # facebook:
+    # twitter:
+    # weibo:
+    email:    mailto:tajik@naver.com
