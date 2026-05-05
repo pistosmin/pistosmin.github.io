@@ -47,27 +47,6 @@ const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`
       const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.dataset.theme = storedTheme || preferredTheme;
     </script>
-    <script is:inline>
-      const liquidSelector = '.liquid-control, .refractive-control';
-
-      document.addEventListener('pointermove', (event) => {
-        const target = event.target instanceof Element ? event.target.closest(liquidSelector) : null;
-        if (!(target instanceof HTMLElement)) return;
-
-        const rect = target.getBoundingClientRect();
-        target.style.setProperty('--liquid-x', `${event.clientX - rect.left}px`);
-        target.style.setProperty('--liquid-y', `${event.clientY - rect.top}px`);
-      });
-
-      document.addEventListener('pointerout', (event) => {
-        const target = event.target instanceof Element ? event.target.closest(liquidSelector) : null;
-        if (!(target instanceof HTMLElement)) return;
-        if (event.relatedTarget instanceof Node && target.contains(event.relatedTarget)) return;
-
-        target.style.removeProperty('--liquid-x');
-        target.style.removeProperty('--liquid-y');
-      });
-    </script>
   </head>
   <body>
     <Header client:only="react">
