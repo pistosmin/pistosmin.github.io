@@ -10,6 +10,10 @@ function isActive(href: string) {
   if (href === '/writing/') return pathname.startsWith('/writing/') || pathname.startsWith('/posts/');
   return pathname.startsWith(href);
 }
+
+const activeIndex = navItems.findIndex((item) => isActive(item.href));
+const navIndicatorIndex = activeIndex >= 0 ? activeIndex : 0;
+const navIndicatorOpacity = activeIndex >= 0 ? 1 : 0;
 ---
 
 <header class="site-header" data-pagefind-ignore>
@@ -20,11 +24,15 @@ function isActive(href: string) {
       <span>{SITE.title}</span>
     </a>
 
-    <div class="nav-links">
+    <div
+      class="nav-links"
+      data-active-index={activeIndex >= 0 ? activeIndex : undefined}
+      style={`--nav-index: ${navIndicatorIndex}; --nav-indicator-opacity: ${navIndicatorOpacity};`}
+    >
       {
         navItems.map((item) => (
           <a
-            class:list={['nav-link', 'liquid-control', isActive(item.href) && 'is-active']}
+            class:list={['nav-link', isActive(item.href) && 'is-active']}
             href={item.href}
             aria-current={isActive(item.href) ? 'page' : undefined}
           >

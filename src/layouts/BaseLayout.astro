@@ -37,15 +37,14 @@ const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://hangeul.pstatic.net" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css"
+      href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
     />
     <script is:inline>
       const storedTheme = window.localStorage.getItem('theme');
-      const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = storedTheme || preferredTheme;
+      document.documentElement.dataset.theme = storedTheme || 'light';
     </script>
   </head>
   <body>
