@@ -1,0 +1,41 @@
+---
+import type { CategorySummary } from '../lib/categorySummary';
+
+interface Props {
+  summary: CategorySummary;
+  variant?: 'hero' | 'nav';
+}
+
+const { summary, variant = 'nav' } = Astro.props;
+const classes = [
+  'category-summary-card',
+  `category-summary-card--${variant}`,
+  summary.disabled && 'is-disabled',
+];
+const statusClasses = ['category-summary-card__status', summary.isNew && 'is-new'];
+const dateLabel = summary.latestDate ? `업데이트 ${summary.latestDateLabel}` : summary.latestDateLabel;
+---
+
+{
+  summary.disabled ? (
+    <span class:list={classes} data-category={summary.key} aria-disabled="true">
+      <span class="category-summary-card__head">
+        <strong>{summary.label}</strong>
+        <em class:list={statusClasses}>{summary.statusLabel}</em>
+      </span>
+      <span class="category-summary-card__count">{summary.countLabel}</span>
+      <span class="category-summary-card__latest">{summary.latestTitle}</span>
+      <span class="category-summary-card__date">{dateLabel}</span>
+    </span>
+  ) : (
+    <a class:list={classes} href={summary.href} data-category={summary.key}>
+      <span class="category-summary-card__head">
+        <strong>{summary.label}</strong>
+        <em class:list={statusClasses}>{summary.statusLabel}</em>
+      </span>
+      <span class="category-summary-card__count">{summary.countLabel}</span>
+      <span class="category-summary-card__latest">{summary.latestTitle}</span>
+      <time class="category-summary-card__date" datetime={summary.latestDate?.toISOString()}>{dateLabel}</time>
+    </a>
+  )
+}

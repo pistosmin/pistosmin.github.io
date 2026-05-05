@@ -1,13 +1,14 @@
 ---
+import CategorySummaryCard from '../components/CategorySummaryCard.astro';
 import PostCard from '../components/PostCard.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import RefractiveHomeActions from '../components/RefractiveHomeActions';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getNotes, getPosts, getProjects } from '../lib/content';
-import { categoryMeta, formatDate, SITE, type CategoryKey } from '../lib/site';
+import { ArrowUpRight } from 'lucide-react';
+import { getPosts, getProjects } from '../lib/content';
+import { getCategorySummaries } from '../lib/categorySummary';
+import { formatCompactDate, SITE } from '../lib/site';
 
 const posts = await getPosts();
-const notes = await getNotes();
 const projects = await getProjects();
 const featuredPosts = posts.filter((post) => post.data.featured).slice(0, 3);
 const latestPosts = [
@@ -15,17 +16,37 @@ const latestPosts = [
   ...posts.filter((post) => !featuredPosts.some((featured) => featured.id === post.id)),
 ].slice(0, 3);
 const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 2);
-const categories = Object.entries(categoryMeta).map(([key, meta]) => ({
-  key: key as CategoryKey,
-  label: meta.label,
-  count: posts.filter((post) => post.data.category === key).length,
-}));
-const heroIndexItems = categories.map((category) => ({
-  href: `/writing/#${category.key}`,
-  label: category.label,
-  meta: `${category.count} posts`,
-  disabled: category.count === 0,
-}));
+const categorySummaries = getCategorySummaries(posts);
+const projectItems = (featuredProjects.length > 0 ? featuredProjects : projects).slice(0, 4);
+const tagSummaries = Array.from(
+  posts.reduce((tags, post) => {
+    const freshnessDate = post.data.updated ?? post.data.published;
+    post.data.tags.forEach((tag) => {
+      const existing = tags.get(tag);
+      tags.set(tag, {
+        label: tag,
+        count: (existing?.count ?? 0) + 1,
+        latestDate: !existing || freshnessDate > existing.latestDate ? freshnessDate : existing.latestDate,
+      });
+    });
+    return tags;
+  }, new Map<string, { label: string; count: number; latestDate: Date }>()),
+)
+  .map(([, tag]) => tag)
+  .sort((left, right) => right.count - left.count || right.latestDate.valueOf() - left.latestDate.valueOf())
+  .slice(0, 10);
+const giscusEnabled = Boolean(
+  import.meta.env.PUBLIC_GISCUS_REPO &&
+    import.meta.env.PUBLIC_GISCUS_REPO_ID &&
+    import.meta.env.PUBLIC_GISCUS_CATEGORY &&
+    import.meta.env.PUBLIC_GISCUS_CATEGORY_ID,
+);
+const reactionItems = posts.slice(0, 3);
+const statusLabels = {
+  'in-progress': '진행 중',
+  shipped: '공개됨',
+  archived: '보관됨',
+};
 ---
 
 <BaseLayout title="pistoslog" description={SITE.description}>
@@ -55,21 +76,7 @@ const heroIndexItems = categories.map((category) => ({
         </div>
       </div>
       <div class="hero-index">
-        {
-          heroIndexItems.map((item) =>
-            item.disabled ? (
-              <span class="hero-index-link hero-index-link--disabled" aria-disabled="true">
-                <span>{item.label}</span>
-                <small>{item.meta}</small>
-              </span>
-            ) : (
-              <a class="hero-index-link liquid-control" href={item.href}>
-                <span>{item.label}</span>
-                <small>{item.meta}</small>
-              </a>
-            ),
-          )
-        }
+        {categorySummaries.map((summary) => <CategorySummaryCard summary={summary} variant="hero" />)}
       </div>
     </div>
   </section>
@@ -87,25 +94,45 @@ const heroIndexItems = categories.map((category) => ({
     </div>
   </section>
 
-  <section class="split-band editorial-lower">
-    <div class="notes-panel">
+  <section class="home-lower">
+    <div class="tag-index-section">
       <div class="section-heading section-heading--compact">
         <div>
-          <p class="eyebrow">Notes</p>
-          <h2>짧은 기록</h2>
+          <p class="eyebrow">Tags</p>
+          <h2>태그 모아보기</h2>
         </div>
       </div>
-      <div class="note-list">
-        {notes.slice(0, 4).map((note) => (
-          <a href={`/notes/${note.id}/`}>
-            <strong>{note.data.title}</strong>
-            <span>{formatDate(note.data.published)}</span>
+      <div class="tag-cloud-panel" aria-label="글 태그 목록">
+        {tagSummaries.map((tag) => (
+          <span class="tag-token">
+            <strong>#{tag.label}</strong>
+            <small>아티클 {tag.count}개</small>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <div class="reaction-panel">
+      <div class="section-heading section-heading--compact">
+        <div>
+          <p class="eyebrow">Reactions</p>
+          <h2>최근 반응</h2>
+        </div>
+      </div>
+      <div class="reaction-list">
+        {reactionItems.map((post) => (
+          <a class="reaction-item" href={`/posts/${post.id}/#comments`}>
+            <span>{giscusEnabled ? '댓글·공감' : '연동 대기'}</span>
+            <strong>{post.data.title}</strong>
+            <time datetime={(post.data.updated ?? post.data.published).toISOString()}>
+              {formatCompactDate(post.data.updated ?? post.data.published)}
+            </time>
           </a>
         ))}
       </div>
     </div>
 
-    <div class="section-block">
+    <div class="project-rail-section">
       <div class="section-heading section-heading--compact">
         <div>
           <p class="eyebrow">Projects</p>
@@ -113,9 +140,17 @@ const heroIndexItems = categories.map((category) => ({
         </div>
         <a href="/projects/">전체 보기</a>
       </div>
-      <div class="project-grid">
-        {(featuredProjects.length > 0 ? featuredProjects : projects.slice(0, 2)).map((project) => (
-          <ProjectCard project={project} />
+      <div class="project-rail">
+        {projectItems.map((project) => (
+          <a class="project-peek" href={`/projects/${project.id}/`}>
+            <span class="project-peek__status">{statusLabels[project.data.status]}</span>
+            <strong>{project.data.title}</strong>
+            <p>{project.data.description}</p>
+            <span class="project-peek__stack">
+              {project.data.stack.slice(0, 3).map((item) => <span>{item}</span>)}
+            </span>
+            <ArrowUpRight aria-hidden="true" size={16} />
+          </a>
         ))}
       </div>
     </div>
