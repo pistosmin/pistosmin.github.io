@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="pistoslog">
+  <defs>
+    <linearGradient id="mark" x1="18" y1="10" x2="110" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#176b5b"/>
+      <stop offset="0.52" stop-color="#315f9d"/>
+      <stop offset="1" stop-color="#d96d4f"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="104" height="104" rx="26" fill="url(#mark)"/>
+  <path d="M41 91V34h24.5c12.6 0 21.5 7.6 21.5 19.2 0 11.8-8.9 19.5-21.5 19.5H55.2V91H41Zm14.2-30.4h9.1c5.2 0 8.4-2.8 8.4-7.3 0-4.6-3.2-7.3-8.4-7.3h-9.1v14.6Z" fill="#fff"/>
+</svg>

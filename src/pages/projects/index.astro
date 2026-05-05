@@ -1,0 +1,19 @@
+---
+import ProjectCard from '../../components/ProjectCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout title="Projects" description="개인 작업물과 실험 프로젝트를 모아둔 페이지.">
+  <section class="page-hero page-hero--narrow">
+    <p class="eyebrow">Projects</p>
+    <h1>작업물</h1>
+    <p>만들고 배운 것들을 결과물과 맥락 중심으로 정리합니다.</p>
+  </section>
+
+  <section class="project-grid project-grid--wide">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </section>
+</BaseLayout>

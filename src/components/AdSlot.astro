@@ -1,0 +1,26 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label = 'AD' } = Astro.props;
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const slot = import.meta.env.PUBLIC_ADSENSE_SLOT;
+---
+
+{
+  client && slot ? (
+    <ins
+      class="adsbygoogle ad-slot"
+      style="display:block"
+      data-ad-client={client}
+      data-ad-slot={slot}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    />
+  ) : (
+    <aside class="ad-slot ad-slot--placeholder" aria-label="광고 영역" data-pagefind-ignore>
+      <span>{label}</span>
+    </aside>
+  )
+}

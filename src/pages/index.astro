@@ -1,0 +1,120 @@
+---
+import PostCard from '../components/PostCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import RefractiveHomeActions from '../components/RefractiveHomeActions';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getNotes, getPosts, getProjects } from '../lib/content';
+import { categoryMeta, formatDate, SITE, type CategoryKey } from '../lib/site';
+
+const posts = await getPosts();
+const notes = await getNotes();
+const projects = await getProjects();
+const featuredPosts = posts.filter((post) => post.data.featured).slice(0, 3);
+const latestPosts = [
+  ...featuredPosts,
+  ...posts.filter((post) => !featuredPosts.some((featured) => featured.id === post.id)),
+].slice(0, 3);
+const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 2);
+const categories = Object.entries(categoryMeta).map(([key, meta]) => ({
+  key: key as CategoryKey,
+  label: meta.label,
+  count: posts.filter((post) => post.data.category === key).length,
+}));
+const heroIndexItems = categories.map((category) => ({
+  href: `/writing/#${category.key}`,
+  label: category.label,
+  meta: `${category.count} posts`,
+}));
+---
+
+<BaseLayout title="pistoslog" description={SITE.description}>
+  <section class="hero-section">
+    <div class="hero-copy">
+      <p class="eyebrow">Personal publishing space</p>
+      <h1>
+        <span>생각과 코드,</span>
+        <span>일상을 오래 읽히는</span>
+        <span>형태로 기록합니다.</span>
+      </h1>
+      <p>
+        기술 공부와 개인 작업물, 생활 속 문장들을 한곳에 모으는 블로그입니다. 빠른 소식보다 다시 읽을 수 있는
+        기록을 우선합니다.
+      </p>
+      <div class="hero-actions">
+        <RefractiveHomeActions client:only="react">
+          <Fragment slot="fallback">
+            <a class="button button--primary" href="/writing/">글 읽기</a>
+            <a class="button button--ghost" href="/projects/">작업물 보기</a>
+          </Fragment>
+        </RefractiveHomeActions>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-label="pistosmin profile">
+      <div class="profile-card">
+        <img src="https://github.com/pistosmin.png" alt="pistosmin GitHub profile" loading="eager" />
+        <div>
+          <strong>pistosmin</strong>
+          <span>developer · maker · note taker</span>
+        </div>
+      </div>
+      <div class="hero-index">
+        {
+          heroIndexItems.map((item) => (
+            <a class="hero-index-link liquid-control" href={item.href}>
+              <span>{item.label}</span>
+              <small>{item.meta}</small>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="content-band editorial-writing">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Writing</p>
+        <h2>최근에 남긴 글</h2>
+      </div>
+      <a href="/writing/">전체 보기</a>
+    </div>
+    <div class="post-grid">
+      {latestPosts.map((post, index) => <PostCard post={post} featured={index === 0} />)}
+    </div>
+  </section>
+
+  <section class="split-band editorial-lower">
+    <div class="notes-panel">
+      <div class="section-heading section-heading--compact">
+        <div>
+          <p class="eyebrow">Notes</p>
+          <h2>짧은 기록</h2>
+        </div>
+      </div>
+      <div class="note-list">
+        {notes.slice(0, 4).map((note) => (
+          <a href={`/notes/${note.id}/`}>
+            <strong>{note.data.title}</strong>
+            <span>{formatDate(note.data.published)}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-heading section-heading--compact">
+        <div>
+          <p class="eyebrow">Projects</p>
+          <h2>작업물</h2>
+        </div>
+        <a href="/projects/">전체 보기</a>
+      </div>
+      <div class="project-grid">
+        {(featuredProjects.length > 0 ? featuredProjects : projects.slice(0, 2)).map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

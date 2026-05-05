@@ -1,0 +1,36 @@
+{
+  "name": "pistoslog",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build && pagefind --site dist",
+    "build:astro": "astro build",
+    "check": "astro check",
+    "index": "pagefind --site dist",
+    "new:post": "node scripts/new-content.mjs post",
+    "new:note": "node scripts/new-content.mjs note",
+    "new:project": "node scripts/new-content.mjs project",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.4",
+    "@astrojs/react": "^5.0.4",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@hashintel/refractive": "^0.0.3",
+    "astro": "^6.2.2",
+    "lucide-react": "^1.14.0",
+    "pagefind": "^1.5.2",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  }
+}

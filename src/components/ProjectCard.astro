@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ArrowUpRight } from 'lucide-react';
+import { formatDate } from '../lib/site';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const statusLabels = {
+  'in-progress': '진행 중',
+  shipped: '공개됨',
+  archived: '보관됨',
+};
+---
+
+<article class="project-card">
+  <a href={`/projects/${project.id}/`} class="project-card__link">
+    <span class="project-card__status">{statusLabels[project.data.status]}</span>
+    <h3>{project.data.title}</h3>
+    <p>{project.data.description}</p>
+    <div class="tag-row">
+      {project.data.stack.slice(0, 4).map((item) => <span>{item}</span>)}
+    </div>
+    <div class="project-card__footer">
+      <time datetime={project.data.published.toISOString()}>{formatDate(project.data.published)}</time>
+      <ArrowUpRight aria-hidden="true" size={18} />
+    </div>
+  </a>
+</article>

@@ -1,0 +1,74 @@
+---
+import { getCollection, render } from 'astro:content';
+import AdSlot from '../../components/AdSlot.astro';
+import Giscus from '../../components/Giscus.astro';
+import PostCard from '../../components/PostCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts } from '../../lib/content';
+import { categoryMeta, formatDate, readingMinutes } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const posts = await getPosts();
+const related = posts
+  .filter((item) => item.id !== post.id && item.data.category === post.data.category)
+  .slice(0, 2);
+const category = categoryMeta[post.data.category];
+const minutes = readingMinutes(post.body ?? '');
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="article-shell">
+    <header class="article-header">
+      <a class="back-link" href="/writing/">Writing</a>
+      <p class="eyebrow">{category.label}</p>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <div class="article-meta">
+        <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
+        <span>{minutes}분 읽기</span>
+        {post.data.tags.map((tag) => <span>#{tag}</span>)}
+      </div>
+    </header>
+
+    <div class="article-layout">
+      <aside class="toc" data-pagefind-ignore>
+        <strong>On this page</strong>
+        <nav>
+          {headings.filter((heading) => heading.depth > 1 && heading.depth < 4).map((heading) => (
+            <a href={`#${heading.slug}`} class={`toc-depth-${heading.depth}`}>
+              {heading.text}
+            </a>
+          ))}
+        </nav>
+      </aside>
+
+      <div class="article-content" data-pagefind-body>
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <AdSlot />
+  <Giscus />
+
+  {related.length > 0 && (
+    <section class="content-band content-band--tight">
+      <div class="section-heading">
+        <p class="eyebrow">Related</p>
+        <h2>이어 읽기</h2>
+      </div>
+      <div class="post-grid post-grid--list">
+        {related.map((item) => <PostCard post={item} />)}
+      </div>
+    </section>
+  )}
+</BaseLayout>

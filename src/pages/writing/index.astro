@@ -1,0 +1,43 @@
+---
+import PostCard from '../../components/PostCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts } from '../../lib/content';
+import { categoryMeta } from '../../lib/site';
+
+const posts = await getPosts();
+const categoryItems = Object.entries(categoryMeta).map(([key, meta]) => ({
+  href: `#${key}`,
+  label: meta.label,
+}));
+---
+
+<BaseLayout title="Writing" description="일상, 생각, 기술 공부와 작업 기록을 모아둔 글 목록.">
+  <section class="page-hero page-hero--narrow">
+    <p class="eyebrow">Writing</p>
+    <h1>글 목록</h1>
+    <p>완성된 생각과 공부 기록을 카테고리별로 모읍니다.</p>
+    <div class="category-nav">
+      {categoryItems.map((item) => <a class="category-nav-link liquid-control" href={item.href}>{item.label}</a>)}
+    </div>
+  </section>
+
+  {Object.entries(categoryMeta).map(([key, meta]) => {
+    const grouped = posts.filter((post) => post.data.category === key);
+    if (grouped.length === 0) return null;
+
+    return (
+      <section class="content-band content-band--tight" id={key}>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">{meta.label}</p>
+            <h2>{meta.description}</h2>
+          </div>
+          <span>{grouped.length} posts</span>
+        </div>
+        <div class="post-grid post-grid--list">
+          {grouped.map((post) => <PostCard post={post} />)}
+        </div>
+      </section>
+    );
+  })}
+</BaseLayout>
