@@ -19,12 +19,7 @@ const heroActions = [
         기술, 개인 프로젝트의 맥락을 함께 보여주는 공간입니다.
       </p>
       <div class="hero-actions">
-        <RefractiveActionLinks items={heroActions} client:only="react">
-          <Fragment slot="fallback">
-            <a class="button button--primary" href={SITE.github}>GitHub</a>
-            <a class="button button--ghost" href="/projects/">Projects</a>
-          </Fragment>
-        </RefractiveActionLinks>
+        <RefractiveActionLinks items={heroActions} />
       </div>
     </div>
     <div class="about-card soft-panel">

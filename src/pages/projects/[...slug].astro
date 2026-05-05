@@ -35,17 +35,7 @@ const actionLinks = links.map(([key, value]) => ({
       </div>
       {links.length > 0 && (
         <div class="hero-actions">
-          <RefractiveActionLinks items={actionLinks} client:only="react">
-            <Fragment slot="fallback">
-              {
-                actionLinks.map((item) => (
-                  <a class="button button--ghost" href={item.href}>
-                    {item.label}
-                  </a>
-                ))
-              }
-            </Fragment>
-          </RefractiveActionLinks>
+          <RefractiveActionLinks items={actionLinks} />
         </div>
       )}
     </header>

@@ -1,6 +1,6 @@
 ---
-import Header from '../components/Header';
-import { navItems, SITE } from '../lib/site';
+import SiteHeader from '../components/SiteHeader.astro';
+import { SITE } from '../lib/site';
 import '../styles/global.css';
 
 interface Props {
@@ -49,31 +49,7 @@ const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`
     </script>
   </head>
   <body>
-    <Header client:only="react">
-      <header class="site-header" data-pagefind-ignore slot="fallback">
-        <a class="skip-link" href="#content">본문으로 이동</a>
-        <nav class="nav-shell" aria-label="주요 메뉴">
-          <a class="brand liquid-control" href="/" aria-label={`${SITE.title} 홈`}>
-            <span class="brand-mark">p</span>
-            <span>{SITE.title}</span>
-          </a>
-
-          <div class="nav-links">
-            {navItems.map((item) => <a class="nav-link liquid-control" href={item.href}>{item.label}</a>)}
-          </div>
-
-          <div class="nav-actions">
-            <button class="search-trigger" type="button" aria-label="검색">
-              <span class="fallback-icon" aria-hidden="true">⌕</span>
-              <span>Search</span>
-            </button>
-            <button class="icon-button theme-toggle" type="button" aria-label="테마 변경">
-              <span aria-hidden="true">☾</span>
-            </button>
-          </div>
-        </nav>
-      </header>
-    </Header>
+    <SiteHeader />
     <main id="content">
       <slot />
     </main>

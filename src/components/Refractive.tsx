@@ -23,11 +23,24 @@ type RefractiveProps = {
   children: ReactNode;
   preset?: PresetName;
   refraction?: Partial<RefractiveSettings>;
+  enableRefractive?: boolean;
 };
 
-function ignoreRefractiveRuntimeProps(preset?: PresetName, refraction?: Partial<RefractiveSettings>) {
+function ignoreRefractiveRuntimeProps(
+  preset?: PresetName,
+  refraction?: Partial<RefractiveSettings>,
+  enableRefractive?: boolean,
+) {
   void preset;
   void refraction;
+  void enableRefractive;
+}
+
+function refractiveAttrs(preset?: PresetName, enableRefractive?: boolean) {
+  return {
+    'data-refractive-preset': preset,
+    'data-refractive-mode': enableRefractive ? 'candidate' : 'stable',
+  };
 }
 
 export function RefractiveSurface({
@@ -35,12 +48,17 @@ export function RefractiveSurface({
   className,
   preset = 'panel',
   refraction,
+  enableRefractive = false,
   ...props
 }: HTMLAttributes<HTMLDivElement> & RefractiveProps) {
-  ignoreRefractiveRuntimeProps(preset, refraction);
+  ignoreRefractiveRuntimeProps(preset, refraction, enableRefractive);
 
   return (
-    <div className={cx('refractive-control', className)} {...props}>
+    <div
+      className={cx('refractive-control', className)}
+      {...refractiveAttrs(preset, enableRefractive)}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -51,12 +69,17 @@ export function RefractiveLink({
   className,
   preset = 'pill',
   refraction,
+  enableRefractive = false,
   ...props
 }: AnchorHTMLAttributes<HTMLAnchorElement> & RefractiveProps) {
-  ignoreRefractiveRuntimeProps(preset, refraction);
+  ignoreRefractiveRuntimeProps(preset, refraction, enableRefractive);
 
   return (
-    <a className={cx('refractive-control', className)} {...props}>
+    <a
+      className={cx('refractive-control', className)}
+      {...refractiveAttrs(preset, enableRefractive)}
+      {...props}
+    >
       {children}
     </a>
   );
@@ -67,12 +90,17 @@ export function RefractiveButton({
   className,
   preset = 'pill',
   refraction,
+  enableRefractive = false,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & RefractiveProps) {
-  ignoreRefractiveRuntimeProps(preset, refraction);
+  ignoreRefractiveRuntimeProps(preset, refraction, enableRefractive);
 
   return (
-    <button className={cx('refractive-control', className)} {...props}>
+    <button
+      className={cx('refractive-control', className)}
+      {...refractiveAttrs(preset, enableRefractive)}
+      {...props}
+    >
       {children}
     </button>
   );

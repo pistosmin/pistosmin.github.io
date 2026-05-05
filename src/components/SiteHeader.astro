@@ -1,0 +1,42 @@
+---
+import SearchDialog from './SearchDialog';
+import ThemeToggle from './ThemeToggle';
+import { navItems, SITE } from '../lib/site';
+
+const pathname = Astro.url.pathname;
+
+function isActive(href: string) {
+  if (href === '/') return pathname === '/';
+  if (href === '/writing/') return pathname.startsWith('/writing/') || pathname.startsWith('/posts/');
+  return pathname.startsWith(href);
+}
+---
+
+<header class="site-header" data-pagefind-ignore>
+  <a class="skip-link" href="#content">본문으로 이동</a>
+  <nav class="nav-shell" aria-label="주요 메뉴">
+    <a class="brand liquid-control" href="/" aria-label={`${SITE.title} 홈`}>
+      <span class="brand-mark">p</span>
+      <span>{SITE.title}</span>
+    </a>
+
+    <div class="nav-links">
+      {
+        navItems.map((item) => (
+          <a
+            class:list={['nav-link', 'liquid-control', isActive(item.href) && 'is-active']}
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="nav-actions">
+      <SearchDialog client:idle />
+      <ThemeToggle client:idle />
+    </div>
+  </nav>
+</header>

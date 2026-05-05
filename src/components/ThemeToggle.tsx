@@ -34,7 +34,13 @@ export default function ThemeToggle() {
   const label = theme === 'dark' ? '라이트 모드로 변경' : '다크 모드로 변경';
 
   return (
-    <RefractiveButton className="icon-button theme-toggle" type="button" aria-label={label} onClick={toggleTheme} preset="icon">
+    <RefractiveButton
+      className="icon-button theme-toggle"
+      type="button"
+      aria-label={label}
+      onClick={toggleTheme}
+      preset="icon"
+    >
       {mounted && theme === 'dark' ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
     </RefractiveButton>
   );

@@ -92,7 +92,13 @@ export default function SearchDialog() {
 
   return (
     <>
-      <RefractiveButton className="search-trigger" type="button" onClick={() => setOpen(true)} preset="pill">
+      <RefractiveButton
+        className="search-trigger"
+        type="button"
+        aria-label="검색 열기"
+        onClick={() => setOpen(true)}
+        preset="pill"
+      >
         <Search aria-hidden="true" size={16} />
         <span>Search</span>
         <kbd>⌘K</kbd>
@@ -107,6 +113,7 @@ export default function SearchDialog() {
               <input
                 ref={inputRef}
                 value={query}
+                aria-label="검색어"
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="글, 태그, 프로젝트 검색"
               />

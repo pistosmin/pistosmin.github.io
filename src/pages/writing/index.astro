@@ -5,9 +5,16 @@ import { getPosts } from '../../lib/content';
 import { categoryMeta } from '../../lib/site';
 
 const posts = await getPosts();
-const categoryItems = Object.entries(categoryMeta).map(([key, meta]) => ({
-  href: `#${key}`,
-  label: meta.label,
+const categoryGroups = Object.entries(categoryMeta)
+  .map(([key, meta]) => ({
+    key,
+    meta,
+    posts: posts.filter((post) => post.data.category === key),
+  }))
+  .filter((group) => group.posts.length > 0);
+const categoryItems = categoryGroups.map((group) => ({
+  href: `#${group.key}`,
+  label: group.meta.label,
 }));
 ---
 
@@ -21,10 +28,7 @@ const categoryItems = Object.entries(categoryMeta).map(([key, meta]) => ({
     </div>
   </section>
 
-  {Object.entries(categoryMeta).map(([key, meta]) => {
-    const grouped = posts.filter((post) => post.data.category === key);
-    if (grouped.length === 0) return null;
-
+  {categoryGroups.map(({ key, meta, posts: grouped }) => {
     return (
       <section class="content-band content-band--tight" id={key}>
         <div class="section-heading">

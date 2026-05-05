@@ -267,9 +267,14 @@ button {
 }
 
 .nav-link:hover,
-.nav-link:focus-visible {
+.nav-link:focus-visible,
+.nav-link.is-active {
   color: var(--text-strong);
   outline: none;
+}
+
+.nav-link.is-active {
+  border-color: var(--liquid-border-hover);
 }
 
 .nav-actions {
@@ -547,6 +552,19 @@ button {
 .hero-index-link:hover,
 .hero-index-link:focus-visible {
   transform: translateY(-2px);
+}
+
+.hero-index-link--disabled {
+  background: color-mix(in srgb, var(--surface), transparent 18%);
+  color: var(--muted);
+  cursor: default;
+  opacity: 0.72;
+}
+
+.hero-index-link--disabled:hover,
+.hero-index-link--disabled:focus-visible,
+.hero-index-link--disabled:active {
+  transform: none;
 }
 
 .hero-index-link span,

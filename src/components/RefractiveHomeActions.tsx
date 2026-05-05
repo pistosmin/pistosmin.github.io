@@ -1,12 +1,26 @@
 import { RefractiveLink } from './Refractive';
 
-export default function RefractiveHomeActions() {
+export default function RefractiveHomeActions({
+  enableRefractive = false,
+}: {
+  enableRefractive?: boolean;
+}) {
   return (
     <>
-      <RefractiveLink className="button button--primary" href="/writing/" preset="pill">
+      <RefractiveLink
+        className="button button--primary"
+        enableRefractive={enableRefractive}
+        href="/writing/"
+        preset="pill"
+      >
         글 읽기
       </RefractiveLink>
-      <RefractiveLink className="button button--ghost" href="/projects/" preset="pill">
+      <RefractiveLink
+        className="button button--ghost"
+        enableRefractive={enableRefractive}
+        href="/projects/"
+        preset="pill"
+      >
         작업물 보기
       </RefractiveLink>
     </>

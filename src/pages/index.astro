@@ -24,6 +24,7 @@ const heroIndexItems = categories.map((category) => ({
   href: `/writing/#${category.key}`,
   label: category.label,
   meta: `${category.count} posts`,
+  disabled: category.count === 0,
 }));
 ---
 
@@ -41,12 +42,7 @@ const heroIndexItems = categories.map((category) => ({
         기록을 우선합니다.
       </p>
       <div class="hero-actions">
-        <RefractiveHomeActions client:only="react">
-          <Fragment slot="fallback">
-            <a class="button button--primary" href="/writing/">글 읽기</a>
-            <a class="button button--ghost" href="/projects/">작업물 보기</a>
-          </Fragment>
-        </RefractiveHomeActions>
+        <RefractiveHomeActions />
       </div>
     </div>
 
@@ -60,12 +56,19 @@ const heroIndexItems = categories.map((category) => ({
       </div>
       <div class="hero-index">
         {
-          heroIndexItems.map((item) => (
-            <a class="hero-index-link liquid-control" href={item.href}>
-              <span>{item.label}</span>
-              <small>{item.meta}</small>
-            </a>
-          ))
+          heroIndexItems.map((item) =>
+            item.disabled ? (
+              <span class="hero-index-link hero-index-link--disabled" aria-disabled="true">
+                <span>{item.label}</span>
+                <small>{item.meta}</small>
+              </span>
+            ) : (
+              <a class="hero-index-link liquid-control" href={item.href}>
+                <span>{item.label}</span>
+                <small>{item.meta}</small>
+              </a>
+            ),
+          )
         }
       </div>
     </div>
