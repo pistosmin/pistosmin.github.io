@@ -1,0 +1,21 @@
+---
+import type { TagSummary } from '../lib/taxonomy';
+
+interface Props {
+  tags: TagSummary[];
+  ariaLabel: string;
+  variant?: 'default' | 'index';
+}
+
+const { tags, ariaLabel, variant = 'default' } = Astro.props;
+const classes = ['tag-cloud-panel', variant === 'index' && 'tag-cloud-panel--index'];
+---
+
+<div class:list={classes} aria-label={ariaLabel}>
+  {tags.map((tag) => (
+    <a class="tag-token" href={tag.href}>
+      <strong>#{tag.label}</strong>
+      <small>{tag.countLabel}</small>
+    </a>
+  ))}
+</div>

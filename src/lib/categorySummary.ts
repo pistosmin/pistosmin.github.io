@@ -1,14 +1,11 @@
 import type { CollectionEntry } from 'astro:content';
 import { categoryMeta, formatCompactDate, type CategoryKey } from './site';
+import { getCategoryHref, getPostFreshnessDate } from './taxonomy';
 
 type PostEntry = CollectionEntry<'posts'>;
 
 const RECENT_WINDOW_DAYS = 7;
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
-
-function getPostFreshnessDate(post: PostEntry) {
-  return post.data.updated ?? post.data.published;
-}
 
 export type CategorySummary = {
   key: CategoryKey;
@@ -46,7 +43,7 @@ export function getCategorySummaries(posts: PostEntry[]): CategorySummary[] {
       key: categoryKey,
       label: meta.label,
       description: meta.description,
-      href: `/writing/#${categoryKey}`,
+      href: getCategoryHref(categoryKey),
       count: categoryPosts.length,
       countLabel: categoryPosts.length > 0 ? `아티클 ${categoryPosts.length}개` : '아티클 없음',
       disabled: categoryPosts.length === 0,

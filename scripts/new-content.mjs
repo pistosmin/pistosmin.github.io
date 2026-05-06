@@ -7,7 +7,6 @@ const title = process.argv.slice(3).join(' ').trim();
 
 const targets = {
   post: 'src/content/posts',
-  note: 'src/content/notes',
   project: 'src/content/projects',
 };
 
@@ -35,7 +34,6 @@ if (existsSync(filename)) {
 
 const templates = {
   post: `---\ntitle: "${title}"\ndescription: "한 문장 요약을 적는다."\npublished: ${today}\ncategory: "thought"\ntags: []\ndraft: true\n---\n\n본문을 쓴다.\n`,
-  note: `---\ntitle: "${title}"\ndescription: "짧은 설명을 적는다."\npublished: ${today}\ntags: []\ndraft: true\n---\n\n메모를 쓴다.\n`,
   project: `---\ntitle: "${title}"\ndescription: "프로젝트를 한 문장으로 설명한다."\npublished: ${today}\nstatus: "in-progress"\nstack: []\ntags: []\ndraft: true\nlinks: {}\n---\n\n프로젝트의 문제, 접근, 배운 점을 쓴다.\n`,
 };
 

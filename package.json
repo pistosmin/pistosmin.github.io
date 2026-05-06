@@ -13,7 +13,6 @@
     "verify:architecture": "node scripts/verify-architecture.mjs",
     "index": "pagefind --site dist",
     "new:post": "node scripts/new-content.mjs post",
-    "new:note": "node scripts/new-content.mjs note",
     "new:project": "node scripts/new-content.mjs project",
     "preview": "astro preview",
     "astro": "astro"

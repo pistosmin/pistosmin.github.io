@@ -9,10 +9,8 @@ export const SITE = {
 
 export const navItems = [
   { label: 'Writing', href: '/writing/' },
-  { label: 'Notes', href: '/notes/' },
   { label: 'Projects', href: '/projects/' },
   { label: 'About', href: '/about/' },
-  { label: 'Now', href: '/now/' },
 ];
 
 export const categoryMeta = {

@@ -19,12 +19,6 @@ npm run dev
 npm run new:post -- "글 제목"
 ```
 
-새 노트:
-
-```sh
-npm run new:note -- "노트 제목"
-```
-
 새 프로젝트:
 
 ```sh
@@ -34,7 +28,6 @@ npm run new:project -- "프로젝트 이름"
 콘텐츠 위치는 다음과 같습니다.
 
 - `src/content/posts`: 완성된 블로그 글
-- `src/content/notes`: 짧은 메모
 - `src/content/projects`: 개인 작업물
 
 ## 검증

@@ -15,10 +15,15 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 const links = Object.entries(project.data.links).filter(([, value]) => Boolean(value));
+const linkLabels = {
+  demo: 'Demo',
+  repo: 'GitHub',
+  caseStudy: '작업 글',
+} as const;
 const actionLinks = links.map(([key, value]) => ({
   href: value as string,
-  label: key,
-  variant: 'ghost' as const,
+  label: linkLabels[key as keyof typeof linkLabels] ?? key,
+  variant: key === 'repo' ? ('primary' as const) : ('ghost' as const),
 }));
 ---
 

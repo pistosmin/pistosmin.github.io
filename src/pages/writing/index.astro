@@ -1,21 +1,15 @@
 ---
 import CategorySummaryCard from '../../components/CategorySummaryCard.astro';
 import PostCard from '../../components/PostCard.astro';
+import TagTokenList from '../../components/TagTokenList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPosts } from '../../lib/content';
 import { getCategorySummaries } from '../../lib/categorySummary';
-import { categoryMeta, type CategoryKey } from '../../lib/site';
+import { getTagSummaries } from '../../lib/taxonomy';
 
 const posts = await getPosts();
 const categorySummaries = getCategorySummaries(posts);
-const summaryByKey = new Map(categorySummaries.map((summary) => [summary.key, summary]));
-const categoryGroups = Object.entries(categoryMeta)
-  .map(([key, meta]) => ({
-    key: key as CategoryKey,
-    meta,
-    posts: posts.filter((post) => post.data.category === key),
-  }))
-  .filter((group) => group.posts.length > 0);
+const tagSummaries = getTagSummaries(posts);
 ---
 
 <BaseLayout title="Writing" description="일상, 생각, 기술 공부와 작업 기록을 모아둔 글 목록.">
@@ -26,27 +20,27 @@ const categoryGroups = Object.entries(categoryMeta)
     <div class="category-nav category-nav--summary">
       {categorySummaries.map((summary) => <CategorySummaryCard summary={summary} />)}
     </div>
+    <div class="writing-tag-summary">
+      <div class="writing-tag-summary__head">
+        <strong>태그 모아보기</strong>
+        <span>전체 글 기준 · 태그 {tagSummaries.length}개</span>
+      </div>
+      <TagTokenList tags={tagSummaries.slice(0, 14)} ariaLabel="전체 글 태그 목록" />
+    </div>
   </section>
 
-  {categoryGroups.map(({ key, meta, posts: grouped }) => {
-    const summary = summaryByKey.get(key);
-    return (
-      <section class="content-band content-band--tight writing-category-section" id={key}>
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">{meta.label}</p>
-            <h2>{meta.description}</h2>
-          </div>
-          <div class="section-heading__meta">
-            {summary?.isNew && <span class="section-heading__status">NEW</span>}
-            <span>{summary?.countLabel ?? `${grouped.length}편`}</span>
-            {summary?.latestDate && <time datetime={summary.latestDate.toISOString()}>업데이트 {summary.latestDateLabel}</time>}
-          </div>
-        </div>
-        <div class="post-grid post-grid--list">
-          {grouped.map((post) => <PostCard post={post} />)}
-        </div>
-      </section>
-    );
-  })}
+  <section class="content-band content-band--tight writing-category-section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">All posts</p>
+        <h2>전체 글</h2>
+      </div>
+      <div class="section-heading__meta">
+        <span>아티클 {posts.length}개</span>
+      </div>
+    </div>
+    <div class="post-grid post-grid--list">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
 </BaseLayout>

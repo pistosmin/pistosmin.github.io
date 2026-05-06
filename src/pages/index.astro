@@ -2,11 +2,13 @@
 import CategorySummaryCard from '../components/CategorySummaryCard.astro';
 import PostCard from '../components/PostCard.astro';
 import RefractiveHomeActions from '../components/RefractiveHomeActions';
+import TagTokenList from '../components/TagTokenList.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowUpRight } from 'lucide-react';
 import { getPosts, getProjects } from '../lib/content';
 import { getCategorySummaries } from '../lib/categorySummary';
 import { formatCompactDate, SITE } from '../lib/site';
+import { getTagSummaries } from '../lib/taxonomy';
 
 const posts = await getPosts();
 const projects = await getProjects();
@@ -18,23 +20,7 @@ const latestPosts = [
 const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 2);
 const categorySummaries = getCategorySummaries(posts);
 const projectItems = (featuredProjects.length > 0 ? featuredProjects : projects).slice(0, 4);
-const tagSummaries = Array.from(
-  posts.reduce((tags, post) => {
-    const freshnessDate = post.data.updated ?? post.data.published;
-    post.data.tags.forEach((tag) => {
-      const existing = tags.get(tag);
-      tags.set(tag, {
-        label: tag,
-        count: (existing?.count ?? 0) + 1,
-        latestDate: !existing || freshnessDate > existing.latestDate ? freshnessDate : existing.latestDate,
-      });
-    });
-    return tags;
-  }, new Map<string, { label: string; count: number; latestDate: Date }>()),
-)
-  .map(([, tag]) => tag)
-  .sort((left, right) => right.count - left.count || right.latestDate.valueOf() - left.latestDate.valueOf())
-  .slice(0, 10);
+const tagSummaries = getTagSummaries(posts).slice(0, 10);
 const giscusEnabled = Boolean(
   import.meta.env.PUBLIC_GISCUS_REPO &&
     import.meta.env.PUBLIC_GISCUS_REPO_ID &&
@@ -101,15 +87,9 @@ const statusLabels = {
           <p class="eyebrow">Tags</p>
           <h2>태그 모아보기</h2>
         </div>
+        <a href="/tags/">전체 보기</a>
       </div>
-      <div class="tag-cloud-panel" aria-label="글 태그 목록">
-        {tagSummaries.map((tag) => (
-          <span class="tag-token">
-            <strong>#{tag.label}</strong>
-            <small>아티클 {tag.count}개</small>
-          </span>
-        ))}
-      </div>
+      <TagTokenList tags={tagSummaries} ariaLabel="글 태그 목록" />
     </div>
 
     <div class="reaction-panel">

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagTokenList from '../../components/TagTokenList.astro';
+import { getPosts } from '../../lib/content';
+import { getTagSummaries } from '../../lib/taxonomy';
+
+const posts = await getPosts();
+const tagSummaries = getTagSummaries(posts);
+---
+
+<BaseLayout title="Tags" description="pistoslog의 글 태그를 모아둔 인덱스.">
+  <section class="page-hero page-hero--narrow">
+    <p class="eyebrow">Tags</p>
+    <h1>태그 모아보기</h1>
+    <p>반복해서 등장하는 주제와 도구를 태그별 글 목록으로 엮었습니다.</p>
+  </section>
+
+  <section class="content-band content-band--tight archive-list-section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Tag index</p>
+        <h2>전체 태그</h2>
+      </div>
+      <div class="section-heading__meta">
+        <span>태그 {tagSummaries.length}개</span>
+      </div>
+    </div>
+    <TagTokenList tags={tagSummaries} ariaLabel="전체 글 태그 목록" variant="index" />
+  </section>
+</BaseLayout>

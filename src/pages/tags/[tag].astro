@@ -1,0 +1,41 @@
+---
+import PostCard from '../../components/PostCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts } from '../../lib/content';
+import { getTagSummaries } from '../../lib/taxonomy';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return getTagSummaries(posts).map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+---
+
+<BaseLayout title={`#${tag.label} 글 목록`} description={`#${tag.label} 태그가 달린 글 목록.`}>
+  <section class="page-hero page-hero--narrow">
+    <a class="back-link archive-back-link" href="/tags/">전체 태그</a>
+    <p class="eyebrow">Tag</p>
+    <h1>#{tag.label}</h1>
+    <p>{tag.countLabel}를 최신 업데이트 기준으로 모았습니다.</p>
+  </section>
+
+  <section class="content-band content-band--tight archive-list-section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Tagged writing</p>
+        <h2>관련 글</h2>
+      </div>
+      <div class="section-heading__meta">
+        <span>{tag.countLabel}</span>
+        {tag.latestDate && <time datetime={tag.latestDate.toISOString()}>업데이트 {tag.latestDateLabel}</time>}
+      </div>
+    </div>
+    <div class="post-grid post-grid--list">
+      {tag.posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>

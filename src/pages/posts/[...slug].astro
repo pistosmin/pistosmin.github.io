@@ -6,6 +6,7 @@ import PostCard from '../../components/PostCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPosts } from '../../lib/content';
 import { categoryMeta, formatDate, readingMinutes } from '../../lib/site';
+import { getTagHref } from '../../lib/taxonomy';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -35,7 +36,7 @@ const minutes = readingMinutes(post.body ?? '');
       <div class="article-meta">
         <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
         <span>{minutes}분 읽기</span>
-        {post.data.tags.map((tag) => <span>#{tag}</span>)}
+        {post.data.tags.map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}
       </div>
     </header>
 

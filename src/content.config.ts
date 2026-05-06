@@ -23,11 +23,6 @@ const posts = defineCollection({
   }),
 });
 
-const notes = defineCollection({
-  loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}', retainBody: true }),
-  schema: z.object(postLikeSchema),
-});
-
 const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}', retainBody: true }),
   schema: z.object({
@@ -50,4 +45,4 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { posts, notes, projects };
+export const collections = { posts, projects };

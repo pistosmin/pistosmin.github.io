@@ -12,6 +12,17 @@ tags: ["pistoswiki", "Obsidian", "Graphify", "Quartz", "LLM Wiki"]
 
 `pistoswiki`는 이 두 번째 목적에서 출발했다. 좋은 글을 바로 쓰기 위한 도구가 아니라, 나중에 좋은 글로 바꿀 수 있는 원천을 잃어버리지 않기 위한 시스템이었다.
 
+흐름을 아주 단순하게 그리면 이렇다.
+
+```txt
+Inbox / Daily note
+  -> Source note
+  -> Project note
+  -> public-safe blog post
+```
+
+위키는 앞쪽 세 단계를 맡고, 블로그는 마지막 단계를 맡는다. 이 구분이 없으면 모든 메모를 블로그처럼 예쁘게 쓰려다가 기록 속도가 죽거나, 반대로 원천 메모를 그대로 공개해 독자가 읽기 어려운 글이 된다.
+
 ## 왜 Obsidian vault가 원천이어야 했나
 
 출발점은 LLM Wiki 아이디어와 Graphify였다. AI와 길게 작업하면 대화 안에는 꽤 많은 판단이 남는다. 왜 이 기술을 골랐는지, 어디서 막혔는지, 어떤 기준으로 줄였는지, 어떤 파일을 보고 결정했는지 같은 것들이다. 그런데 세션이 끝나면 대부분 흘러간다.
@@ -34,9 +45,9 @@ tags: ["pistoswiki", "Obsidian", "Graphify", "Quartz", "LLM Wiki"]
 
 Graphify는 처음에 꽤 큰 기대를 준 도구였다. vault의 관계를 그래프로 만들고, LLM이 그 그래프를 따라 지식을 탐색할 수 있다면 개인 지식 시스템의 밀도가 확 올라갈 것 같았다.
 
-하지만 실제로는 바로 그런 결과가 나오지 않았다. Graphify는 코드 AST를 읽는 쪽에는 강하지만, 초기 마크다운 vault에서 의미 있는 semantic extraction을 바로 만들어주지는 않았다. 콘텐츠가 충분히 쌓이지 않은 시점에는 그래프 신호도 약했다. 노트가 적으면 연결이 없고, 연결이 없으면 그래프는 보기 좋은 그림일 뿐이다.
+하지만 실제로는 바로 그런 결과가 나오지 않았다. 당시 내가 넣은 초기 노트 수와 설정에서는 마크다운 vault에서 기대한 semantic extraction 신호가 바로 나오지 않았다. 콘텐츠가 충분히 쌓이지 않은 시점에는 그래프 신호도 약했다. 노트가 적으면 연결이 없고, 연결이 없으면 그래프는 보기 좋은 그림일 뿐이다.
 
-그래서 우회가 필요했다. Python으로 frontmatter와 wikilink를 읽고, `networkx`와 `PyYAML`을 이용해 `graph.json`, `GRAPH_REPORT.md`, `build.log`를 만드는 방식으로 먼저 밀도를 확인했다. 회사용 워크벤치에서는 Graphify 설치 자체가 막힐 수 있으니 `rg "calls|reads|writes"`와 `rg "\[\[.*\]\]"` 같은 grep 기반 fallback도 생각했다.
+그래서 우회가 필요했다. Python으로 frontmatter와 wikilink를 읽고, `networkx`와 `PyYAML`을 이용해 `graph.json`, `GRAPH_REPORT.md`, `build.log`를 만드는 방식으로 먼저 밀도를 확인했다. 제한된 실행 환경에서는 Graphify 설치 자체가 막힐 수 있으니 `rg "calls|reads|writes"`와 `rg "\[\[.*\]\]"` 같은 grep 기반 fallback도 생각했다.
 
 이 경험이 남긴 기준은 단순하다. 그래프 도구는 콘텐츠 밀도가 생긴 뒤에 의미가 있다. 처음부터 그래프 자동화에 많은 시간을 쓰면, 정작 그래프가 읽을 원천을 못 쌓는다.
 

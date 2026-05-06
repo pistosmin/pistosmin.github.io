@@ -1,0 +1,16 @@
+---
+title: "fresh-dbo sync skill"
+description: "RDB 오브젝트 변경을 감지해 LLM 위키가 읽을 원천 SQL 파일을 최신 상태로 유지하는 동기화 스킬 설계."
+published: 2026-04-25
+status: "archived"
+stack: ["Python", "Oracle/Tibero", "SQLite", "SQL", "DDL"]
+tags: ["database", "sync", "llm-wiki"]
+links:
+  caseStudy: "https://pistosmin.github.io/posts/fresh-dbo-sync-skill/"
+---
+
+fresh-dbo sync skill은 데이터베이스 안의 프로시저, 함수, 패키지, 테이블, 뷰 같은 오브젝트 변경을 로컬 원천 파일로 가져오기 위한 설계다.
+
+목표는 DB 배포 도구가 아니라 LLM 위키의 원천을 신선하게 유지하는 것이다. 그래서 DB에 쓰는 기능은 제외하고, 변경 감지와 파일 갱신, 삭제 목록, 상태 추적에 집중했다.
+
+상태 저장은 큰 JSON 파일 대신 SQLite 로컬 파일을 기준으로 잡았다. 오브젝트가 많아질수록 파일 하나를 매번 통째로 읽고 쓰는 방식보다, object-level state를 가진 작은 로컬 DB가 더 안정적이라고 판단했다.

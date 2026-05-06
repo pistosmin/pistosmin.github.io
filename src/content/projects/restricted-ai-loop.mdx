@@ -1,0 +1,19 @@
+---
+title: "제한 환경 AI 루프 패키지"
+description: "인터넷과 외부 도구가 막힌 환경에서도 반복 가능한 AI 작업 루프를 쓰기 위한 오프라인 패키징 실험."
+published: 2026-04-17
+status: "shipped"
+stack: ["Python", "Shell", "Claude Code", "Playwright", "Packaging"]
+tags: ["offline", "agent-loop", "handoff-package"]
+links:
+  repo: "https://github.com/pistosmin/offline-ralph-skill"
+  caseStudy: "https://pistosmin.github.io/posts/internal-ai-loop-offline/"
+---
+
+제한 환경 AI 루프 패키지는 인터넷 검색, 패키지 설치, 외부 플러그인 사용이 제한된 환경에서도 AI 작업을 반복 가능하게 만들기 위한 실험이다.
+
+핵심은 거대한 자동화를 한 번에 들여오는 것이 아니라, 실행 가능한 작은 단위로 포장하는 것이다. Python CLI는 결정론적인 실행을 맡고, Claude Code skill은 얇은 트리거 역할을 맡는다.
+
+함께 만든 오프라인 Ralph skill은 같은 목표를 신선한 컨텍스트로 반복 실행하고, 검증 명령과 중단 조건으로 루프를 통제한다. 도구가 막힌 환경에서도 작업 루프 자체는 가져갈 수 있다는 점을 확인한 프로젝트다.
+
+연결한 저장소는 전체 내부 작업물이 아니라 공개 가능한 오프라인 skill 패키지다. 실제 환경별 설정과 민감한 핸드오프 자료는 공개 범위에서 제외했다.

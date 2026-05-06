@@ -1,0 +1,17 @@
+---
+title: "querycreator"
+description: "자연어 질문을 안전한 RDB 조회로 바꾸기 위한 Python 기반 SQL 도구 레이어."
+published: 2026-04-10
+status: "shipped"
+stack: ["Python", "Oracle", "SQL", "pytest", "LLM Tooling"]
+tags: ["sql", "rdb", "llm", "safety"]
+links:
+  repo: "https://github.com/pistosmin/querycreator"
+  caseStudy: "https://pistosmin.github.io/posts/querycreator-safe-sql-agent/"
+---
+
+querycreator는 LLM이 운영 데이터베이스 앞에서 함부로 움직이지 않게 만들기 위한 도구 레이어다.
+
+자연어 질문을 바로 SQL로 바꾸는 것이 아니라, 먼저 업무 메타데이터를 조회하고, 허용된 SELECT인지 검증하고, 필요한 경우 제한된 저장 함수만 호출하도록 흐름을 좁혔다.
+
+이 프로젝트에서 중요한 것은 생성 능력이 아니라 제어 능력이었다. SQL 검증, 메타데이터, 업무 사전, 테스트를 한데 묶어 “그럴듯한 쿼리”가 아니라 “실행해도 되는 쿼리”에 가깝게 만드는 것이 목표였다.
