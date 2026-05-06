@@ -1198,6 +1198,11 @@ button {
   outline: none;
 }
 
+.project-peek:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--blue), white 28%);
+  outline-offset: 3px;
+}
+
 .project-peek:only-child {
   width: min(100%, 460px);
 }
@@ -1314,6 +1319,11 @@ button {
   transform: translateY(-1px);
 }
 
+.project-rail-cta:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--blue), white 28%);
+  outline-offset: 3px;
+}
+
 .project-rail-cta svg {
   flex: 0 0 auto;
   color: var(--muted);
@@ -1334,6 +1344,80 @@ button {
 
 .project-grid--wide {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.github-contribution-panel {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin: 12px 0 24px;
+  padding: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-strong), transparent 6%), color-mix(in srgb, var(--surface), transparent 14%));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+}
+
+.github-contribution-panel__copy {
+  min-width: 0;
+}
+
+.github-contribution-panel h2 {
+  margin: 6px 0 8px;
+  color: var(--text-strong);
+  font-size: 1.18rem;
+  line-height: 1.25;
+}
+
+.github-contribution-panel p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted-strong);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.github-contribution-panel__visual {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.github-contribution-panel__visual img {
+  display: block;
+  width: min(830px, 100%);
+  min-width: 560px;
+  max-width: none;
+  height: auto;
+}
+
+.github-contribution-panel__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  color: var(--text-strong);
+  font-size: 0.84rem;
+  font-weight: 760;
+  white-space: nowrap;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 54%);
+  border-radius: var(--radius-control);
+}
+
+.github-contribution-panel__link:hover,
+.github-contribution-panel__link:focus-visible {
+  color: var(--text-strong);
+  border-color: color-mix(in srgb, var(--accent), transparent 24%);
+  outline: none;
+}
+
+.github-contribution-panel__link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--blue), white 28%);
+  outline-offset: 3px;
 }
 
 .project-card__link {
@@ -2016,6 +2100,15 @@ button {
   .project-rail {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .github-contribution-panel {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .github-contribution-panel__link {
+    justify-self: start;
   }
 
   .toc {
