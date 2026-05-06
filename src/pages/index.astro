@@ -2,6 +2,7 @@
 import CategorySummaryCard from '../components/CategorySummaryCard.astro';
 import PostCard from '../components/PostCard.astro';
 import RefractiveHomeActions from '../components/RefractiveHomeActions';
+import SocialProfileLinks from '../components/SocialProfileLinks';
 import TagTokenList from '../components/TagTokenList.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowUpRight } from 'lucide-react';
@@ -51,9 +52,10 @@ const statusLabels = {
     <div class="hero-visual" aria-label="pistosmin profile">
       <div class="profile-card">
         <img src="https://github.com/pistosmin.png" alt="pistosmin GitHub profile" loading="eager" />
-        <div>
+        <div class="profile-card__body">
           <strong>pistosmin</strong>
           <span>developer · maker · note taker</span>
+          <SocialProfileLinks />
         </div>
       </div>
       <div class="hero-index">
@@ -113,20 +115,27 @@ const statusLabels = {
           <p class="eyebrow">Projects</p>
           <h2>작업물</h2>
         </div>
-        <a href="/projects/">전체 보기</a>
       </div>
-      <div class="project-rail">
-        {projectItems.map((project) => (
-          <a class="project-peek" href={`/projects/${project.id}/`}>
-            <span class="project-peek__status">{statusLabels[project.data.status]}</span>
-            <strong>{project.data.title}</strong>
-            <p>{project.data.description}</p>
-            <span class="project-peek__stack">
-              {project.data.stack.slice(0, 3).map((item) => <span>{item}</span>)}
-            </span>
-            <ArrowUpRight aria-hidden="true" size={16} />
+      <div class="project-rail-content">
+        <div class="project-rail">
+          {projectItems.map((project) => (
+            <a class="project-peek" href={`/projects/${project.id}/`}>
+              <span class="project-peek__status">{statusLabels[project.data.status]}</span>
+              <strong>{project.data.title}</strong>
+              <p>{project.data.description}</p>
+              <span class="project-peek__stack">
+                {project.data.stack.slice(0, 3).map((item) => <span>{item}</span>)}
+              </span>
+              <ArrowUpRight aria-hidden="true" size={16} />
+            </a>
+          ))}
+        </div>
+        <div class="project-rail-footer">
+          <a class="project-rail-cta" href="/projects/">
+            <span>작업물 전체 보기</span>
+            <ArrowUpRight aria-hidden="true" size={15} />
           </a>
-        ))}
+        </div>
       </div>
     </div>
   </section>

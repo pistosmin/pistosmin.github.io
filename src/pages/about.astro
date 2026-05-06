@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RefractiveActionLinks from '../components/RefractiveActionLinks';
+import SocialProfileLinks from '../components/SocialProfileLinks';
 import { SITE } from '../lib/site';
 
 const heroActions = [
-  { href: SITE.github, label: 'GitHub', variant: 'primary' },
+  { href: SITE.github, icon: 'github', label: 'GitHub', variant: 'primary' },
   { href: '/projects/', label: 'Projects', variant: 'ghost' },
 ] as const;
 ---
@@ -30,8 +31,11 @@ const heroActions = [
     </div>
     <div class="about-card soft-panel">
       <img src="https://github.com/pistosmin.png" alt="pistosmin GitHub profile" />
-      <strong>pistosmin</strong>
-      <span>기록을 남기며 도구를 만드는 개발자</span>
+      <div class="about-card__body">
+        <strong>pistosmin</strong>
+        <span>기록을 남기며 도구를 만드는 개발자</span>
+        <SocialProfileLinks />
+      </div>
     </div>
   </section>
 

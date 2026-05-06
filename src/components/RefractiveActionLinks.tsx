@@ -1,7 +1,9 @@
 import { RefractiveLink } from './Refractive';
+import BrandIcon, { type BrandIconName } from './BrandIcon';
 
 type ActionLink = {
   href: string;
+  icon?: BrandIconName;
   label: string;
   variant?: 'primary' | 'ghost';
   enableRefractive?: boolean;
@@ -24,6 +26,7 @@ export default function RefractiveActionLinks({
           key={`${item.href}-${item.label}`}
           preset="pill"
         >
+          {item.icon && <BrandIcon name={item.icon} />}
           {item.label}
         </RefractiveLink>
       ))}

@@ -4,6 +4,8 @@ export const SITE = {
   description: '일상과 생각, 기술 공부와 개인 작업물을 차분하게 쌓아두는 블로그.',
   url: 'https://pistosmin.github.io',
   github: 'https://github.com/pistosmin',
+  instagram: 'https://www.instagram.com/pistosmin',
+  linkedin: 'https://www.linkedin.com/in/pistosmin',
   locale: 'ko-KR',
 };
 
