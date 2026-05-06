@@ -9,15 +9,15 @@ const heroActions = [
 ] as const;
 ---
 
-<BaseLayout title="About" description="pistosmin 소개와 관심사, 프로젝트 방향.">
+<BaseLayout title="About" description="pistoslog는 만든 것과 생각한 것을 다시 읽을 수 있게 남기는 개인 블로그입니다.">
   <section class="about-hero">
     <div>
       <p class="eyebrow">About</p>
-      <h1>운영 제약을 도구와 기록으로 바꾸는 개발자.</h1>
+      <h1>빠르게 만들고, 다시 읽을 수 있게 남깁니다.</h1>
       <p>
-        레거시 업무 시스템, 운영 데이터, AI 도구 사이에서 먼저 경계를 세우고, 반복 가능한 도구와 문서화 루프로
-        문제를 줄입니다. 빠른 자동화보다 나중에 다시 믿을 수 있는 실행 기록, 검증 가능한 산출물, 공개 가능한
-        형태의 정리를 중요하게 봅니다.
+        pistosmin입니다. 레거시 RDB, 제한된 업무 환경, LLM/agent 도구처럼 빠르게 실험하되 조심해서 다뤄야 하는
+        것들을 자주 만집니다. 새 도구는 빨리 써보는 편입니다. 그래도 내 작업에 남길 때는 다음에도 설명할 수
+        있는 선택인지, 실제로 다시 돌려볼 수 있는지 먼저 봅니다.
       </p>
       <div class="hero-actions">
         <RefractiveActionLinks items={heroActions} />
@@ -26,43 +26,31 @@ const heroActions = [
     <div class="about-card soft-panel">
       <img src="https://github.com/pistosmin.png" alt="pistosmin GitHub profile" />
       <strong>pistosmin</strong>
-      <span>Data tooling · AI workflow · knowledge systems</span>
+      <span>기록을 남기며 도구를 만드는 개발자</span>
     </div>
   </section>
 
   <section class="resume-grid">
     <div class="soft-panel">
-      <h2>문제를 보는 방식</h2>
+      <h2>요즘의 작업</h2>
       <p>
-        오래 운영된 시스템에서는 코드보다 먼저 맥락이 사라집니다. 그래서 데이터 접근 권한, 검증 가능한 원천,
-        실행 로그, 공개 가능한 기록의 경계를 먼저 정하고 그 안에서 도구를 만듭니다.
+        운영 데이터 앞에서는 더 똑똑한 답보다 실행해도 되는 조건을 먼저 확인합니다. LLM 위키를 만들 때도
+        그럴듯한 요약보다 어떤 원천을 보고 썼는지 남기는 쪽을 더 신경 씁니다. 개인 위키와 블로그는 같은 메모를
+        다른 속도로 다루는 두 공간으로 나누어 쓰고 있습니다.
       </p>
     </div>
     <div class="soft-panel">
-      <h2>기술 스택</h2>
-      <div class="tag-row">
-        <span>Python</span>
-        <span>TypeScript</span>
-        <span>React</span>
-        <span>Java/Spring</span>
-        <span>SQL/RDB</span>
-        <span>LLM Tooling</span>
-        <span>Docker</span>
-        <span>Knowledge Systems</span>
-      </div>
-    </div>
-    <div class="soft-panel">
-      <h2>대표 작업</h2>
+      <h2>남기는 기준</h2>
       <p>
-        자연어 질문을 안전한 SQL 조회 흐름으로 좁히는 도구, 개인 작업 기억을 쌓는 LLM 위키, 제한 환경에서도
-        돌아가는 AI 반복 작업 패키지, 풀스택 커뮤니티 앱 실험을 만들며 자동화와 사람의 판단 경계를 다뤘습니다.
+        AI에게 넓은 초안을 맡기되, 마지막에는 사람이 줄입니다. 테스트가 붙는지, 로그가 남는지, 공개해도 되는지,
+        다음 세션이 이어 읽을 수 있는지를 보면서 작업을 작게 다시 정리합니다.
       </p>
     </div>
     <div class="soft-panel">
-      <h2>블로그의 역할</h2>
+      <h2>이 블로그</h2>
       <p>
-        완성된 이력서 한 줄보다 더 넓은 맥락을 보여주기 위해, 프로젝트의 결정, 실패, 검증, 공개 가능한 범위를
-        함께 남깁니다. 이곳의 글은 다음 작업을 시작할 때 다시 읽을 수 있는 작업 로그에 가깝습니다.
+        여기는 완성된 결과만 전시하는 곳은 아닙니다. 왜 그때 그 선택을 했는지, 어디서 과하게 벌어졌는지, 무엇을
+        남기고 무엇을 버렸는지를 나중에도 이해할 수 있게 써두는 곳입니다.
       </p>
     </div>
   </section>
