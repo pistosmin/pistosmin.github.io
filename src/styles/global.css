@@ -2115,7 +2115,8 @@ button {
   }
 
   .profile-social-link {
-    flex-basis: 100%;
+    flex: 0 0 auto;
+    max-width: 100%;
     padding: 0 8px;
   }
 
