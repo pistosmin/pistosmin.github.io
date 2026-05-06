@@ -15,6 +15,7 @@ const {
   image = `${SITE.url}/og-default.svg`,
 } = Astro.props;
 const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`;
+const needsProjectRailCacheFix = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
@@ -42,6 +43,11 @@ const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
     />
+    {
+      needsProjectRailCacheFix && (
+        <link rel="stylesheet" href="/project-rail-hover-fix.css?v=20260506-2" />
+      )
+    }
     <script is:inline>
       const storedTheme = window.localStorage.getItem('theme');
       document.documentElement.dataset.theme = storedTheme || 'light';
