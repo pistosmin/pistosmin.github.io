@@ -40,3 +40,4 @@ Scope: Make the home page automatically reflect new or updated posts, projects, 
 - Development note: home Tags now uses freshness-sorted tag summaries, while full tag archives keep the existing count-first behavior.
 - Development note: `npm run verify:home-content` fails against the old build and passes after the dynamic home changes.
 - Completed: `npm run check`, `npm run build`, `npm run verify:architecture`, `npm run verify:home-content`, and `git diff --check` pass before remote publish.
+- Limit note: Recent Reactions still cannot read live Giscus discussion activity without GitHub API/build-time integration; it now stays aligned with the freshest post targets instead of stale featured ordering.
