@@ -753,7 +753,6 @@ button {
 .split-band,
 .project-grid--wide,
 .timeline-list,
-.resume-grid,
 .comments-panel {
   margin: 72px 0;
 }
@@ -1303,16 +1302,6 @@ button {
   padding: 18px;
 }
 
-.resume-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.resume-grid .soft-panel {
-  padding: 22px;
-}
-
 .soft-panel,
 .toc,
 .comments-placeholder {
@@ -1322,15 +1311,36 @@ button {
   box-shadow: var(--shadow-soft);
 }
 
-.resume-grid h2 {
-  margin: 0 0 10px;
-  color: var(--text-strong);
+.about-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  width: min(100%, 820px);
+  margin-top: 6px;
+  padding: 14px 16px;
 }
 
-.resume-grid p {
-  margin: 0;
+.about-stack > span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.about-stack div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.about-stack div span {
+  padding: 5px 8px;
   color: var(--muted-strong);
-  line-height: 1.72;
+  background: color-mix(in srgb, var(--surface-muted), transparent 26%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 680;
 }
 
 .article-shell {
@@ -1646,8 +1656,7 @@ button {
   .post-grid,
   .post-grid--list,
   .project-grid,
-  .project-grid--wide,
-  .resume-grid {
+  .project-grid--wide {
     grid-template-columns: 1fr;
   }
 
