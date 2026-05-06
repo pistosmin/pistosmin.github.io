@@ -5,9 +5,10 @@ interface Props {
   summary: CategorySummary;
   variant?: 'hero' | 'nav';
   active?: boolean;
+  href?: string;
 }
 
-const { summary, variant = 'nav', active = false } = Astro.props;
+const { summary, variant = 'nav', active = false, href = summary.href } = Astro.props;
 const classes = [
   'category-summary-card',
   `category-summary-card--${variant}`,
@@ -30,7 +31,7 @@ const dateLabel = summary.latestDate ? `업데이트 ${summary.latestDateLabel}`
       <span class="category-summary-card__date">{dateLabel}</span>
     </span>
   ) : (
-    <a class:list={classes} href={summary.href} data-category={summary.key} aria-current={active ? 'page' : undefined}>
+    <a class:list={classes} href={href} data-category={summary.key} aria-current={active ? 'page' : undefined}>
       <span class="category-summary-card__head">
         <strong>{summary.label}</strong>
         <em class:list={statusClasses}>{summary.statusLabel}</em>

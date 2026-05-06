@@ -10,37 +10,40 @@ import { getTagSummaries } from '../../lib/taxonomy';
 const posts = await getPosts();
 const categorySummaries = getCategorySummaries(posts);
 const tagSummaries = getTagSummaries(posts);
+const archiveHash = '#writing-posts';
 ---
 
 <BaseLayout title="Writing" description="일상, 생각, 기술 공부와 작업 기록을 모아둔 글 목록.">
-  <section class="page-hero page-hero--narrow">
-    <p class="eyebrow">Writing</p>
-    <h1>글 목록</h1>
-    <p>완성된 생각과 공부 기록을 카테고리별로 모읍니다.</p>
-    <div class="category-nav category-nav--summary">
-      {categorySummaries.map((summary) => <CategorySummaryCard summary={summary} />)}
-    </div>
-    <div class="writing-tag-summary">
-      <div class="writing-tag-summary__head">
-        <strong>태그 모아보기</strong>
-        <span>전체 글 기준 · 태그 {tagSummaries.length}개</span>
+  <section class="writing-archive-layout">
+    <div class="writing-archive-sidebar">
+      <p class="eyebrow">Writing</p>
+      <h1>글 목록</h1>
+      <p>완성된 생각과 공부 기록을 카테고리별로 모읍니다.</p>
+      <nav class="category-nav category-nav--summary" aria-label="글 카테고리 목록">
+        {categorySummaries.map((summary) => <CategorySummaryCard summary={summary} href={`${summary.href}${archiveHash}`} />)}
+      </nav>
+      <div class="writing-tag-summary">
+        <div class="writing-tag-summary__head">
+          <strong>태그 모아보기</strong>
+          <span>전체 글 기준 · 태그 {tagSummaries.length}개</span>
+        </div>
+        <TagTokenList tags={tagSummaries.slice(0, 14)} ariaLabel="전체 글 태그 목록" />
       </div>
-      <TagTokenList tags={tagSummaries.slice(0, 14)} ariaLabel="전체 글 태그 목록" />
     </div>
-  </section>
 
-  <section class="content-band content-band--tight writing-category-section">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">All posts</p>
-        <h2>전체 글</h2>
+    <section id="writing-posts" class="writing-archive-list" aria-labelledby="writing-posts-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">All posts</p>
+          <h2 id="writing-posts-title">전체 글</h2>
+        </div>
+        <div class="section-heading__meta">
+          <span>아티클 {posts.length}개</span>
+        </div>
       </div>
-      <div class="section-heading__meta">
-        <span>아티클 {posts.length}개</span>
+      <div class="post-grid post-grid--list">
+        {posts.map((post) => <PostCard post={post} />)}
       </div>
-    </div>
-    <div class="post-grid post-grid--list">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
+    </section>
   </section>
 </BaseLayout>

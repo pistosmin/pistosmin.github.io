@@ -33,39 +33,48 @@ export async function getStaticPaths() {
 }
 
 const { categorySummaries, posts, siblingTags, summary, tag } = Astro.props;
+const scopedTags = siblingTags.map((item) => ({
+  ...item,
+  href: `${item.href}#writing-posts`,
+}));
+const archiveHash = '#writing-posts';
 ---
 
 <BaseLayout title={`${summary.label} #${tag.label} 글 목록`} description={`${summary.label} 글 중 #${tag.label} 태그가 달린 글 목록.`}>
-  <section class="page-hero page-hero--narrow">
-    <a class="back-link archive-back-link" href={summary.href}>{summary.label} 글</a>
-    <p class="eyebrow">Writing · Tag</p>
-    <h1>#{tag.label}</h1>
-    <p>{summary.label} 글 안에서 {tag.countLabel}를 최신 업데이트 기준으로 모았습니다.</p>
-    <div class="category-nav category-nav--summary" aria-label="글 카테고리 목록">
-      {categorySummaries.map((item) => <CategorySummaryCard summary={item} active={item.key === summary.key} />)}
-    </div>
-    <div class="writing-tag-summary">
-      <div class="writing-tag-summary__head">
-        <strong>태그 모아보기</strong>
-        <span>{summary.label} 글 기준 · 태그 {siblingTags.length}개</span>
+  <section class="writing-archive-layout">
+    <div class="writing-archive-sidebar">
+      <a class="back-link archive-back-link" href={`${summary.href}${archiveHash}`}>{summary.label} 글</a>
+      <p class="eyebrow">Writing · Tag</p>
+      <h1>#{tag.label}</h1>
+      <p>{summary.label} 글 안에서 {tag.countLabel}를 최신 업데이트 기준으로 모았습니다.</p>
+      <nav class="category-nav category-nav--summary" aria-label="글 카테고리 목록">
+        {categorySummaries.map((item) => (
+          <CategorySummaryCard summary={item} active={item.key === summary.key} href={`${item.href}${archiveHash}`} />
+        ))}
+      </nav>
+      <div class="writing-tag-summary">
+        <div class="writing-tag-summary__head">
+          <strong>태그 모아보기</strong>
+          <span>{summary.label} 글 기준 · 태그 {scopedTags.length}개</span>
+        </div>
+        <TagTokenList tags={scopedTags} ariaLabel={`${summary.label} 글 태그 목록`} />
       </div>
-      <TagTokenList tags={siblingTags} ariaLabel={`${summary.label} 글 태그 목록`} />
     </div>
-  </section>
 
-  <section class="content-band content-band--tight archive-list-section">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">{summary.label} tagged writing</p>
-        <h2>관련 글</h2>
+    <section id="writing-posts" class="writing-archive-list" aria-labelledby="writing-posts-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{summary.label} tagged writing</p>
+          <h2 id="writing-posts-title">관련 글</h2>
+        </div>
+        <div class="section-heading__meta">
+          <span>{tag.countLabel}</span>
+          {tag.latestDate && <time datetime={tag.latestDate.toISOString()}>업데이트 {tag.latestDateLabel}</time>}
+        </div>
       </div>
-      <div class="section-heading__meta">
-        <span>{tag.countLabel}</span>
-        {tag.latestDate && <time datetime={tag.latestDate.toISOString()}>업데이트 {tag.latestDateLabel}</time>}
+      <div class="post-grid post-grid--list">
+        {posts.map((post) => <PostCard post={post} />)}
       </div>
-    </div>
-    <div class="post-grid post-grid--list">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
+    </section>
   </section>
 </BaseLayout>
