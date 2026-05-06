@@ -12,22 +12,17 @@ import { getTagSummaries } from '../lib/taxonomy';
 
 const posts = await getPosts();
 const projects = await getProjects();
-const featuredPosts = posts.filter((post) => post.data.featured).slice(0, 3);
-const latestPosts = [
-  ...featuredPosts,
-  ...posts.filter((post) => !featuredPosts.some((featured) => featured.id === post.id)),
-].slice(0, 3);
-const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 2);
+const latestPosts = posts.slice(0, 3);
 const categorySummaries = getCategorySummaries(posts);
-const projectItems = (featuredProjects.length > 0 ? featuredProjects : projects).slice(0, 4);
-const tagSummaries = getTagSummaries(posts).slice(0, 10);
+const projectItems = projects.slice(0, 4);
+const tagSummaries = getTagSummaries(posts, { sortBy: 'freshness' }).slice(0, 10);
 const giscusEnabled = Boolean(
   import.meta.env.PUBLIC_GISCUS_REPO &&
     import.meta.env.PUBLIC_GISCUS_REPO_ID &&
     import.meta.env.PUBLIC_GISCUS_CATEGORY &&
     import.meta.env.PUBLIC_GISCUS_CATEGORY_ID,
 );
-const reactionItems = posts.slice(0, 3);
+const reactionItems = latestPosts;
 const statusLabels = {
   'in-progress': '진행 중',
   shipped: '공개됨',

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { ArrowUpRight } from 'lucide-react';
+import { getEntryFreshnessDate } from '../lib/content';
 import { formatDate } from '../lib/site';
 
 interface Props {
@@ -8,6 +9,9 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const displayDate = getEntryFreshnessDate(project);
+const isUpdated = Boolean(project.data.updated && project.data.updated.valueOf() !== project.data.published.valueOf());
+const displayDateLabel = isUpdated ? `수정 ${formatDate(displayDate)}` : formatDate(displayDate);
 const statusLabels = {
   'in-progress': '진행 중',
   shipped: '공개됨',
@@ -24,7 +28,7 @@ const statusLabels = {
       {project.data.stack.slice(0, 4).map((item) => <span>{item}</span>)}
     </div>
     <div class="project-card__footer">
-      <time datetime={project.data.published.toISOString()}>{formatDate(project.data.published)}</time>
+      <time datetime={displayDate.toISOString()}>{displayDateLabel}</time>
       <ArrowUpRight aria-hidden="true" size={18} />
     </div>
   </a>

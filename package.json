@@ -11,6 +11,7 @@
     "build:astro": "astro build",
     "check": "astro check",
     "verify:architecture": "node scripts/verify-architecture.mjs",
+    "verify:home-content": "node scripts/verify-home-content.mjs",
     "index": "pagefind --site dist",
     "new:post": "node scripts/new-content.mjs post",
     "new:project": "node scripts/new-content.mjs project",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "^2.8.4"
   }
 }

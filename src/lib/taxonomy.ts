@@ -1,4 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
+import { getEntryFreshnessDate } from './content';
 import { formatCompactDate } from './site';
 
 type PostEntry = CollectionEntry<'posts'>;
@@ -9,6 +10,7 @@ type MutableTagSummary = Omit<TagSummary, 'count' | 'countLabel' | 'latestDateLa
 
 type TagSummaryOptions = {
   hrefForTag?: (tag: { label: string; slug: string }) => string;
+  sortBy?: 'count' | 'freshness';
 };
 
 export type TagSummary = {
@@ -23,7 +25,7 @@ export type TagSummary = {
 };
 
 export function getPostFreshnessDate(post: PostEntry) {
-  return post.data.updated ?? post.data.published;
+  return getEntryFreshnessDate(post);
 }
 
 export function getCategoryHref(category: string) {
@@ -94,6 +96,8 @@ export function getTagSummaries(posts: PostEntry[], options: TagSummaryOptions =
     });
   });
 
+  const sortBy = options.sortBy ?? 'count';
+
   return Array.from(summaries.values())
     .map((summary) => {
       const { normalizedLabel, ...publicSummary } = summary;
@@ -109,10 +113,16 @@ export function getTagSummaries(posts: PostEntry[], options: TagSummaryOptions =
         latestDateLabel: summary.latestDate ? formatCompactDate(summary.latestDate) : '업데이트 대기',
       };
     })
-    .sort(
-      (left, right) =>
+    .sort((left, right) => {
+      const freshnessSort =
+        (right.latestDate?.valueOf() ?? 0) - (left.latestDate?.valueOf() ?? 0) ||
+        right.count - left.count ||
+        left.label.localeCompare(right.label, 'ko-KR');
+      const countSort =
         right.count - left.count ||
         (right.latestDate?.valueOf() ?? 0) - (left.latestDate?.valueOf() ?? 0) ||
-        left.label.localeCompare(right.label, 'ko-KR'),
-    );
+        left.label.localeCompare(right.label, 'ko-KR');
+
+      return sortBy === 'freshness' ? freshnessSort : countSort;
+    });
 }

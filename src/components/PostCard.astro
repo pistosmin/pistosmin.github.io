@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { categoryMeta, formatDate } from '../lib/site';
+import { getPostFreshnessDate } from '../lib/taxonomy';
 
 interface Props {
   post: CollectionEntry<'posts'>;
@@ -9,6 +10,9 @@ interface Props {
 
 const { post, featured = false } = Astro.props;
 const category = categoryMeta[post.data.category];
+const displayDate = getPostFreshnessDate(post);
+const isUpdated = Boolean(post.data.updated && post.data.updated.valueOf() !== post.data.published.valueOf());
+const displayDateLabel = isUpdated ? `수정 ${formatDate(displayDate)}` : formatDate(displayDate);
 ---
 
 <article class:list={['post-card', featured && 'post-card--featured']}>
@@ -17,7 +21,7 @@ const category = categoryMeta[post.data.category];
     <h3>{post.data.title}</h3>
     <p>{post.data.description}</p>
     <div class="post-card__meta">
-      <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
+      <time datetime={displayDate.toISOString()}>{displayDateLabel}</time>
       <span>{post.data.tags.slice(0, 3).join(' · ')}</span>
     </div>
   </a>
