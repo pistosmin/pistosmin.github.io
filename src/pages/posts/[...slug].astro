@@ -1,10 +1,11 @@
 ---
 import { getCollection, render } from 'astro:content';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSeries from '../../components/ArticleSeries.astro';
 import Giscus from '../../components/Giscus.astro';
 import PostCard from '../../components/PostCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getPosts } from '../../lib/content';
+import { getPosts, getSeriesPosts } from '../../lib/content';
 import { categoryMeta, formatDate, readingMinutes } from '../../lib/site';
 import { getTagHref } from '../../lib/taxonomy';
 
@@ -19,6 +20,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const posts = await getPosts();
+const seriesPosts = getSeriesPosts(posts, post);
 const related = posts
   .filter((item) => item.id !== post.id && item.data.category === post.data.category)
   .slice(0, 2);
@@ -39,6 +41,8 @@ const minutes = readingMinutes(post.body ?? '');
         {post.data.tags.map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}
       </div>
     </header>
+
+    <ArticleSeries posts={seriesPosts} currentPostId={post.id} />
 
     <div class="article-layout">
       <aside class="toc" data-pagefind-ignore>

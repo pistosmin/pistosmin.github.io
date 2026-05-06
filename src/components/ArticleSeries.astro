@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../lib/site';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  currentPostId: string;
+}
+
+const { posts, currentPostId } = Astro.props;
+const seriesTitle = posts.find((post) => post.id === currentPostId)?.data.series?.title ?? posts[0]?.data.series?.title;
+---
+
+{
+  posts.length > 1 && seriesTitle && (
+    <nav class="article-series" aria-labelledby="article-series-title" data-pagefind-ignore>
+      <div class="article-series__head">
+        <div>
+          <p class="eyebrow">Series</p>
+          <h2 id="article-series-title">{seriesTitle}</h2>
+        </div>
+        <span>{posts.length}편</span>
+      </div>
+      <ol>
+        {posts.map((item) => {
+          const current = item.id === currentPostId;
+          const order = item.data.series?.order;
+
+          return (
+            <li class:list={[current && 'is-current']}>
+              <a href={`/posts/${item.id}/`} aria-current={current ? 'page' : undefined}>
+                <span class="article-series__order">{typeof order === 'number' ? order : '-'}</span>
+                <strong>{item.data.title}</strong>
+                <time datetime={item.data.published.toISOString()}>{formatDate(item.data.published)}</time>
+                {current && <em>현재 글</em>}
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  )
+}
