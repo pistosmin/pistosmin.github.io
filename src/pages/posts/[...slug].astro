@@ -26,7 +26,7 @@ const category = categoryMeta[post.data.category];
 const minutes = readingMinutes(post.body ?? '');
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} readPostSlug={post.id}>
   <article class="article-shell">
     <header class="article-header">
       <a class="back-link" href="/writing/">Writing</a>

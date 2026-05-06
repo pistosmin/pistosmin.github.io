@@ -961,6 +961,14 @@ button {
     var(--surface-strong);
 }
 
+.post-card__topline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
 .post-card__category,
 .project-card__status {
   width: fit-content;
@@ -970,6 +978,23 @@ button {
   font-weight: 760;
   background: var(--accent-soft);
   border-radius: var(--radius-pill);
+}
+
+.post-card__read-badge {
+  display: none;
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  color: var(--muted-strong);
+  font-size: 0.76rem;
+  font-weight: 760;
+  line-height: 1;
+  background: color-mix(in srgb, var(--blue), transparent 84%);
+  border: 1px solid color-mix(in srgb, var(--blue), transparent 64%);
+  border-radius: var(--radius-pill);
+}
+
+.post-card[data-read="true"] .post-card__read-badge {
+  display: inline-flex;
 }
 
 .post-card h3,

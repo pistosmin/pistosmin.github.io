@@ -7,12 +7,14 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  readPostSlug?: string;
 }
 
 const {
   title = SITE.title,
   description = SITE.description,
   image = `${SITE.url}/og-default.svg`,
+  readPostSlug,
 } = Astro.props;
 const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`;
 const needsProjectRailCacheFix = Astro.url.pathname === '/';
@@ -55,7 +57,7 @@ const needsProjectRailCacheFix = Astro.url.pathname === '/';
   </head>
   <body>
     <SiteHeader />
-    <main id="content">
+    <main id="content" data-current-post-slug={readPostSlug}>
       <slot />
     </main>
     <footer class="site-footer" data-pagefind-ignore>
@@ -69,5 +71,70 @@ const needsProjectRailCacheFix = Astro.url.pathname === '/';
         <a href="/about/">About</a>
       </nav>
     </footer>
+    <script is:inline>
+      (() => {
+        const key = 'pistoslog.readPosts.v1';
+        const maxEntries = 200;
+
+        const getStorage = () => {
+          try {
+            return window.localStorage;
+          } catch {
+            return null;
+          }
+        };
+
+        const readHistory = (storage) => {
+          try {
+            const raw = storage.getItem(key);
+            if (!raw) return {};
+            const parsed = JSON.parse(raw);
+            if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+
+            return Object.fromEntries(
+              Object.entries(parsed).filter(
+                ([slug, timestamp]) => typeof slug === 'string' && typeof timestamp === 'number',
+              ),
+            );
+          } catch {
+            return {};
+          }
+        };
+
+        const writeHistory = (storage, history) => {
+          try {
+            const bounded = Object.fromEntries(
+              Object.entries(history)
+                .sort((left, right) => right[1] - left[1])
+                .slice(0, maxEntries),
+            );
+            storage.setItem(key, JSON.stringify(bounded));
+            return bounded;
+          } catch {
+            return history;
+          }
+        };
+
+        const markCards = (history) => {
+          document.querySelectorAll('[data-post-slug]').forEach((card) => {
+            const slug = card.getAttribute('data-post-slug');
+            if (slug && Object.prototype.hasOwnProperty.call(history, slug)) {
+              card.setAttribute('data-read', 'true');
+            }
+          });
+        };
+
+        const storage = getStorage();
+        if (!storage) return;
+
+        const history = readHistory(storage);
+        const currentSlug = document.getElementById('content')?.dataset.currentPostSlug;
+        if (currentSlug) {
+          history[currentSlug] = Date.now();
+        }
+
+        markCards(writeHistory(storage, history));
+      })();
+    </script>
   </body>
 </html>
