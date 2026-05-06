@@ -2,11 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RefractiveActionLinks from '../components/RefractiveActionLinks';
 import SocialProfileLinks from '../components/SocialProfileLinks';
-import { SITE } from '../lib/site';
 
 const heroActions = [
-  { href: SITE.github, icon: 'github', label: 'GitHub', variant: 'primary' },
-  { href: '/projects/', label: 'Projects', variant: 'ghost' },
+  { href: '/projects/', label: '작업물 보기', variant: 'primary' },
 ] as const;
 ---
 
