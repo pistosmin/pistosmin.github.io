@@ -1,6 +1,91 @@
 {
-  "generatedAt": null,
-  "source": "static-fallback",
+  "generatedAt": "2026-05-07T12:59:09.566Z",
+  "source": "github-discussions",
   "repo": "pistosmin/pistosmin.github.io",
-  "posts": {}
+  "posts": {
+    "company-llm-wiki-workbench": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "fresh-dbo-sync-skill": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "gravity-agent-workflow": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "internal-ai-loop-offline": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "interview-prep-learning-app": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "liquid-glass-blog-ui": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "pistoslog-archive-navigation": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "pistoslog-astro-retrospective": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "pistoswiki-llm-knowledge-system": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "querycreator-safe-sql-agent": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "study-log-architecture": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    },
+    "welcome": {
+      "comments": 0,
+      "reactions": 0,
+      "score": 0,
+      "discussionUrl": null,
+      "updatedAt": null
+    }
+  }
 }
