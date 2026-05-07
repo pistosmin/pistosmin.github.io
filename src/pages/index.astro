@@ -8,6 +8,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowUpRight } from 'lucide-react';
 import { getPosts, getProjects } from '../lib/content';
 import { getCategorySummaries } from '../lib/categorySummary';
+import { formatEngagementLabel, getEngagementActivityDate, getPostEngagement, sortPostsByEngagement } from '../lib/engagement';
 import { formatCompactDate, SITE } from '../lib/site';
 import { getTagSummaries } from '../lib/taxonomy';
 
@@ -17,13 +18,11 @@ const latestPosts = posts.slice(0, 3);
 const categorySummaries = getCategorySummaries(posts);
 const projectItems = projects.slice(0, 4);
 const tagSummaries = getTagSummaries(posts, { sortBy: 'freshness' }).slice(0, 10);
-const giscusEnabled = Boolean(
-  import.meta.env.PUBLIC_GISCUS_REPO &&
-    import.meta.env.PUBLIC_GISCUS_REPO_ID &&
-    import.meta.env.PUBLIC_GISCUS_CATEGORY &&
-    import.meta.env.PUBLIC_GISCUS_CATEGORY_ID,
-);
-const reactionItems = latestPosts;
+const reactionItems = sortPostsByEngagement(posts).slice(0, 3).map((post) => ({
+  post,
+  activityDate: getEngagementActivityDate(post),
+  engagement: getPostEngagement(post.id),
+}));
 const statusLabels = {
   'in-progress': '진행 중',
   shipped: '공개됨',
@@ -97,12 +96,12 @@ const statusLabels = {
         </div>
       </div>
       <div class="reaction-list">
-        {reactionItems.map((post) => (
-          <a class="reaction-item" href={`/posts/${post.id}/#comments`}>
-            <span>{giscusEnabled ? '댓글·공감' : '연동 대기'}</span>
-            <strong>{post.data.title}</strong>
-            <time datetime={(post.data.updated ?? post.data.published).toISOString()}>
-              {formatCompactDate(post.data.updated ?? post.data.published)}
+        {reactionItems.map((item) => (
+          <a class="reaction-item" href={`/posts/${item.post.id}/#comments`}>
+            <span>{formatEngagementLabel(item.engagement)}</span>
+            <strong>{item.post.data.title}</strong>
+            <time datetime={item.activityDate.toISOString()}>
+              {formatCompactDate(item.activityDate)}
             </time>
           </a>
         ))}

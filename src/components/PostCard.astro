@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { formatEngagementLabel, getPostEngagement } from '../lib/engagement';
 import { categoryMeta, formatDate } from '../lib/site';
 import { getPostFreshnessDate } from '../lib/taxonomy';
 
@@ -13,6 +14,8 @@ const category = categoryMeta[post.data.category];
 const displayDate = getPostFreshnessDate(post);
 const isUpdated = Boolean(post.data.updated && post.data.updated.valueOf() !== post.data.published.valueOf());
 const displayDateLabel = isUpdated ? `수정 ${formatDate(displayDate)}` : formatDate(displayDate);
+const engagement = getPostEngagement(post.id);
+const engagementLabel = formatEngagementLabel(engagement);
 ---
 
 <article class:list={['post-card', featured && 'post-card--featured']} data-post-slug={post.id}>
@@ -25,7 +28,8 @@ const displayDateLabel = isUpdated ? `수정 ${formatDate(displayDate)}` : forma
     <p>{post.data.description}</p>
     <div class="post-card__meta">
       <time datetime={displayDate.toISOString()}>{displayDateLabel}</time>
-      <span>{post.data.tags.slice(0, 3).join(' · ')}</span>
+      <span class="post-card__tags">{post.data.tags.slice(0, 3).join(' · ')}</span>
+      <span class="post-card__engagement">{engagementLabel}</span>
     </div>
   </a>
 </article>

@@ -4,6 +4,7 @@ import { parse } from 'yaml';
 
 const root = process.cwd();
 const homePath = path.join(root, 'dist/index.html');
+const engagementPath = path.join(root, 'src/data/engagement.json');
 
 const limits = {
   posts: 3,
@@ -88,6 +89,59 @@ function compareFreshness(left, right) {
     right.data.published.valueOf() - left.data.published.valueOf() ||
     left.id.localeCompare(right.id, 'ko-KR')
   );
+}
+
+function toCount(value) {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+}
+
+function loadEngagementData() {
+  if (!existsSync(engagementPath)) {
+    return { posts: {} };
+  }
+
+  return JSON.parse(readFileSync(engagementPath, 'utf8'));
+}
+
+function getEngagementRecord(postId, engagementData) {
+  const record = engagementData.posts?.[postId] ?? {};
+  const comments = toCount(record.comments);
+  const reactions = toCount(record.reactions);
+
+  return {
+    comments,
+    reactions,
+    score: toCount(record.score) || comments + reactions,
+    updatedAt: typeof record.updatedAt === 'string' ? record.updatedAt : null,
+  };
+}
+
+function engagementLabel(record) {
+  return `공감 ${record.reactions} · 댓글 ${record.comments}`;
+}
+
+function engagementActivityDate(entry, engagementData) {
+  const record = getEngagementRecord(entry.id, engagementData);
+  const updatedAt = record.updatedAt ? new Date(record.updatedAt) : undefined;
+
+  return updatedAt && !Number.isNaN(updatedAt.valueOf()) ? updatedAt : freshnessDate(entry);
+}
+
+function sortByEngagement(entries, engagementData) {
+  return [...entries].sort((left, right) => {
+    const leftEngagement = getEngagementRecord(left.id, engagementData);
+    const rightEngagement = getEngagementRecord(right.id, engagementData);
+    const leftHasEngagement = leftEngagement.score > 0 ? 1 : 0;
+    const rightHasEngagement = rightEngagement.score > 0 ? 1 : 0;
+
+    return (
+      rightHasEngagement - leftHasEngagement ||
+      rightEngagement.score - leftEngagement.score ||
+      engagementActivityDate(right, engagementData).valueOf() - engagementActivityDate(left, engagementData).valueOf() ||
+      freshnessDate(right).valueOf() - freshnessDate(left).valueOf() ||
+      left.id.localeCompare(right.id, 'ko-KR')
+    );
+  });
 }
 
 function normalizeTagLabel(tag) {
@@ -202,6 +256,7 @@ const homeHtml = readFileSync(homePath, 'utf8');
 const posts = loadCollection('posts').sort(compareFreshness);
 const projects = loadCollection('projects').sort(compareFreshness);
 const tags = getTagSummaries(posts);
+const engagementData = loadEngagementData();
 
 const writingSection = extractSection(
   homeHtml,
@@ -213,13 +268,19 @@ const reactionSection = extractSection(homeHtml, '<div class="reaction-panel">',
 const projectSection = extractSection(homeHtml, '<div class="project-rail-section">', '</section>');
 
 const expectedPosts = posts.slice(0, limits.posts);
-const expectedReactionTargets = posts.slice(0, limits.reactions);
+const expectedReactionTargets = sortByEngagement(posts, engagementData).slice(0, limits.reactions);
 const expectedProjects = projects.slice(0, limits.projects);
 const expectedTags = tags.slice(0, limits.tags);
 
 assertEntryTitles(writingSection, expectedPosts, 'latest post');
 assertEntryTitles(reactionSection, expectedReactionTargets, 'reaction target');
 assertEntryTitles(projectSection, expectedProjects, 'project');
+expectedPosts.forEach((post) => {
+  assertIncludes(writingSection, engagementLabel(getEngagementRecord(post.id, engagementData)), 'latest post engagement label');
+});
+expectedReactionTargets.forEach((post) => {
+  assertIncludes(reactionSection, engagementLabel(getEngagementRecord(post.id, engagementData)), 'reaction engagement label');
+});
 
 expectedTags.forEach((tag) => {
   const tagToken = extractTagToken(tagSection, tag);

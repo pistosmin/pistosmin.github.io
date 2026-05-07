@@ -1,0 +1,81 @@
+[
+  {
+    "title": "/posts/liquid-glass-blog-ui/",
+    "body": "Fixture discussion for liquid glass post.",
+    "url": "https://github.com/pistosmin/pistosmin.github.io/discussions/1",
+    "updatedAt": "2026-05-07T04:00:00.000Z",
+    "category": {
+      "name": "Announcements"
+    },
+    "comments": {
+      "totalCount": 2
+    },
+    "reactionGroups": [
+      {
+        "content": "THUMBS_UP",
+        "reactors": {
+          "totalCount": 3
+        }
+      },
+      {
+        "content": "HEART",
+        "reactors": {
+          "totalCount": 1
+        }
+      }
+    ]
+  },
+  {
+    "title": "/posts/pistoslog-astro-retrospective/",
+    "body": "Fixture discussion for pistoslog retrospective.",
+    "url": "https://github.com/pistosmin/pistosmin.github.io/discussions/2",
+    "updatedAt": "2026-05-07T03:00:00.000Z",
+    "category": {
+      "name": "Announcements"
+    },
+    "comments": {
+      "totalCount": 1
+    },
+    "reactionGroups": [
+      {
+        "content": "ROCKET",
+        "reactors": {
+          "totalCount": 2
+        }
+      }
+    ]
+  },
+  {
+    "title": "Unrelated discussion",
+    "body": "This discussion does not point to a post path.",
+    "url": "https://github.com/pistosmin/pistosmin.github.io/discussions/3",
+    "updatedAt": "2026-05-07T02:00:00.000Z",
+    "category": {
+      "name": "Announcements"
+    },
+    "comments": {
+      "totalCount": 9
+    },
+    "reactionGroups": []
+  },
+  {
+    "title": "General discussion that links a post",
+    "body": "This body mentions /posts/welcome/ but should not be used for pathname mapping.",
+    "url": "https://github.com/pistosmin/pistosmin.github.io/discussions/4",
+    "updatedAt": "2026-05-07T01:00:00.000Z",
+    "category": {
+      "name": "Announcements"
+    },
+    "comments": {
+      "totalCount": 4
+    },
+    "reactionGroups": [
+      {
+        "content": "HEART",
+        "reactors": {
+          "totalCount": 4
+        }
+      }
+    ]
+  }
+]

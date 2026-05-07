@@ -6,6 +6,7 @@ import Giscus from '../../components/Giscus.astro';
 import PostCard from '../../components/PostCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPosts, getSeriesPosts } from '../../lib/content';
+import { formatEngagementLabel, getPostEngagement } from '../../lib/engagement';
 import { categoryMeta, formatDate, readingMinutes } from '../../lib/site';
 import { getTagHref } from '../../lib/taxonomy';
 
@@ -26,6 +27,8 @@ const related = posts
   .slice(0, 2);
 const category = categoryMeta[post.data.category];
 const minutes = readingMinutes(post.body ?? '');
+const engagement = getPostEngagement(post.id);
+const engagementLabel = formatEngagementLabel(engagement);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description} readPostSlug={post.id}>
@@ -38,6 +41,7 @@ const minutes = readingMinutes(post.body ?? '');
       <div class="article-meta">
         <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
         <span>{minutes}분 읽기</span>
+        <a class="article-engagement" href="#comments">{engagementLabel}</a>
         {post.data.tags.map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}
       </div>
     </header>

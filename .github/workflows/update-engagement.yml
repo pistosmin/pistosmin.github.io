@@ -1,12 +1,13 @@
-name: Deploy to GitHub Pages
+name: Update Engagement Stats
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  discussions: read
   pages: write
   id-token: write
 
@@ -15,7 +16,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  update-build-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     env:
       PUBLIC_GISCUS_REPO: pistosmin/pistosmin.github.io
@@ -37,6 +41,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Fetch engagement data
+        run: npm run engagement:fetch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ENGAGEMENT_TOKEN || github.token }}
+
+      - name: Commit engagement data
+        run: |
+          if git diff --quiet -- src/data/engagement.json; then
+            echo "No engagement data changes."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/data/engagement.json
+            git commit -m "Update engagement stats"
+            git push
+          fi
+
       - name: Build
         run: npm run build
 
@@ -45,13 +66,6 @@ jobs:
         with:
           path: dist
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5

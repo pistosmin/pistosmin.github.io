@@ -10,6 +10,8 @@
     "build": "astro check && astro build && pagefind --site dist",
     "build:astro": "astro build",
     "check": "astro check",
+    "engagement:fetch": "node scripts/fetch-engagement.mjs",
+    "verify:engagement": "node scripts/verify-engagement.mjs",
     "verify:architecture": "node scripts/verify-architecture.mjs",
     "verify:home-content": "node scripts/verify-home-content.mjs",
     "index": "pagefind --site dist",
